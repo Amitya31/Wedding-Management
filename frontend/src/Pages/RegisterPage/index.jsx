@@ -32,53 +32,61 @@ const RegisterPage = () => {
     }
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setIsLoading(true)
-    
-    // Validate passwords match
-    if (formData.password !== formData.confirmPassword) {
-      setErrors({
-        confirmPassword: 'Passwords do not match'
-      })
-      setIsLoading(false)
-      return
-    }
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
 
-    // Clear any existing errors
-    setErrors({})
-    
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Registration attempt:', formData)
-      
-      // Create user data for authentication
-      const userData = {
-        id: Date.now().toString(),
-        firstName: formData.firstName,
-        lastName: formData.lastName,
+  // frontend validation
+  if (formData.password !== formData.confirmPassword) {
+    setErrors({ confirmPassword: "Passwords do not match" });
+    setIsLoading(false);
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:3000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        // 🔥 BACKEND MAPPING
+        username: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
         password: formData.password,
         role: formData.role
-      }
-      
-      // Save user to localStorage (mock database)
-      const users = JSON.parse(localStorage.getItem('users') || '[]')
-      users.push(userData)
-      localStorage.setItem('users', JSON.stringify(users))
-      
-      // Login user after successful registration
-      login(userData)
-      setIsLoading(false)
-      
-      // Redirect based on role
-      if (formData.role === 'vendor') {
-        navigate('/vendor')
-      } else {
-        navigate('/')
-      }
-    }, 2000)
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      setErrors({ api: data.message || "Registration failed" });
+      setIsLoading(false);
+      return;
+    }
+
+    // 🔥 SAVE TOKEN + USER
+    login({
+      token: data.token,
+      user: data.user
+    });
+
+    // 🔥 REDIRECT
+    if (data.user.Usertype === "vendor") {
+      navigate("/vendor");
+    } else {
+      navigate("/");
+    }
+
+  } catch (err) {
+    setErrors({ api: "Something went wrong" });
+  } finally {
+    setIsLoading(false);
   }
+};
+
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-200 via-pink-200 to-blue-200 flex flex-col justify-center items-center py-4 sm:px-6 lg:px-8">
