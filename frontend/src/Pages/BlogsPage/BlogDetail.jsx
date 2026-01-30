@@ -14,10 +14,10 @@ const BlogDetail = () => {
       date: '2024-01-15',
       location: 'Jaipur, Rajasthan',
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://images.squarespace-cdn.com/content/v1/578537f5cd0f68f8a7411561/1569002290085-NDGE7SVHVLV3XL9VJ4S6/Hyatt+Regency+Scottsdale.jpg',
+        'https://symphonyevents.com.au/wp-content/uploads/2023/02/JKHinduWeddingHighRes-643-2-scaled.jpg',
+        'https://static01.nyt.com/images/2023/05/14/multimedia/FAT-INDIAN-WEDDINGS-01-hptq/FAT-INDIAN-WEDDINGS-01-hptq-superJumbo.jpg',
+        'https://i.pinimg.com/736x/40/6d/be/406dbec6fb1142911def1beba2e2cd63.jpg'
       ],
       excerpt: 'Our royal Indian wedding in Jaipur was made magical with WedEase decorators and caterers. The traditional setup exceeded our dreams.',
       content: `Our royal Indian wedding in Jaipur was a fairytale come true. WedEase helped us book the most amazing traditional decorators who transformed the venue into a palace.
@@ -42,10 +42,10 @@ WedEase made everything seamless - from coordinating with multiple vendors to en
       date: '2024-02-20',
       location: 'Goa',
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://symphonyevents.com.au/wp-content/uploads/2023/02/JKHinduWeddingHighRes-643-2-scaled.jpg',
+        'https://static01.nyt.com/images/2023/05/14/multimedia/FAT-INDIAN-WEDDINGS-01-hptq/FAT-INDIAN-WEDDINGS-01-hptq-superJumbo.jpg',
+        'https://i.pinimg.com/736x/40/6d/be/406dbec6fb1142911def1beba2e2cd63.jpg',
+        'https://images.hindustantimes.com/img/2022/04/20/1600x900/amish-thakkar-7O422yG_b80-unsplash_1650456963232_1650457184254.jpg'
       ],
       excerpt: 'Our beach destination wedding in Goa was absolutely perfect. The destination decorators and caterers created an unforgettable experience.',
       content: `Getting married on the beaches of Goa was always our dream. WedEase connected us with amazing destination wedding planners who handled everything from the beach setup to the reception.
@@ -70,10 +70,10 @@ The wedding was a perfect blend of natural beauty and elegant celebration. From 
       date: '2024-03-10',
       location: 'Mumbai, Maharashtra',
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'https://static01.nyt.com/images/2023/05/14/multimedia/FAT-INDIAN-WEDDINGS-01-hptq/FAT-INDIAN-WEDDINGS-01-hptq-superJumbo.jpg',
+        'https://i.pinimg.com/736x/40/6d/be/406dbec6fb1142911def1beba2e2cd63.jpg',
+        'https://images.hindustantimes.com/img/2022/04/20/1600x900/amish-thakkar-7O422yG_b80-unsplash_1650456963232_1650457184254.jpg',
+        'https://irp.cdn-website.com/28cd0bb4/dms3rep/multi/hindu+wedding+attire.jpeg'
       ],
       excerpt: 'Our contemporary Mumbai wedding was sleek and stylish. Modern decorators and continental caterers created the perfect urban celebration.',
       content: `We wanted a modern, sophisticated wedding in Mumbai and WedEase delivered exactly that. Our wedding was a celebration of contemporary elegance with sleek designs and international flavors.
@@ -98,10 +98,10 @@ WedEase coordinated everything seamlessly - from venue selection to vendor manag
       date: '2024-04-05',
       location: 'Bangalore, Karnataka',
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/736x/40/6d/be/406dbec6fb1142911def1beba2e2cd63.jpg',
+        'https://images.hindustantimes.com/img/2022/04/20/1600x900/amish-thakkar-7O422yG_b80-unsplash_1650456963232_1650457184254.jpg',
+        'https://irp.cdn-website.com/28cd0bb4/dms3rep/multi/hindu+wedding+attire.jpeg',
+        'https://www.visittnt.com/blog/wp-content/uploads/2019/10/destination-wedding-in-kovalam.jpg'
       ],
       excerpt: 'Our traditional South Indian wedding in Bangalore was beautiful and authentic. Cultural decorators and Indian caterers honored our heritage perfectly.',
       content: `Our traditional South Indian wedding in Bangalore was a beautiful celebration of our culture. WedEase helped us find cultural heritage decorators who understood every ritual and tradition.
@@ -126,10 +126,10 @@ WedEase made everything seamless - from coordinating with multiple vendors to en
       date: '2024-05-12',
       location: 'Udaipur, Rajasthan',
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://images.hindustantimes.com/img/2022/04/20/1600x900/amish-thakkar-7O422yG_b80-unsplash_1650456963232_1650457184254.jpg',
+        'https://irp.cdn-website.com/28cd0bb4/dms3rep/multi/hindu+wedding+attire.jpeg',
+        'https://www.visittnt.com/blog/wp-content/uploads/2019/10/destination-wedding-in-kovalam.jpg',
+        'http://www.haringphotography.com/wp-content/uploads/2018/08/Florida-Best-indian-wedding-photographer-4.jpg'
       ],
       excerpt: 'Our luxury palace wedding in Udaipur was beyond imagination. Premium decorators and luxury caterers created an unforgettable royal experience.',
       content: `Our luxury palace wedding in Udaipur was stuff of dreams. WedEase connected us with luxury wedding designers who transformed a historic palace into a magical wonderland.
@@ -152,10 +152,10 @@ WedEase provided VIP service throughout - from personal concierge to coordinatin
       date: '2024-06-18',
       location: 'Pune, Maharashtra',
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://irp.cdn-website.com/28cd0bb4/dms3rep/multi/hindu+wedding+attire.jpeg',
+        'https://www.visittnt.com/blog/wp-content/uploads/2019/10/destination-wedding-in-kovalam.jpg',
+        'http://www.haringphotography.com/wp-content/uploads/2018/08/Florida-Best-indian-wedding-photographer-4.jpg',
+        'https://media.cntraveller.in/wp-content/uploads/2022/08/Celebrations-at-Raffles.jpg'
       ],
       excerpt: 'Our outdoor garden wedding in Pune was magical. The outdoor decorators and floral specialists created a natural paradise.',
       content: `Our garden wedding in Pune was surrounded by natural beauty. WedEase helped us find outdoor garden decorators who created stunning floral arches and garden themes.
@@ -180,10 +180,10 @@ WedEase handled all outdoor logistics - from weather backup plans to ensuring ev
       date: '2024-07-22',
       location: 'Delhi NCR',
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'https://www.visittnt.com/blog/wp-content/uploads/2019/10/destination-wedding-in-kovalam.jpg',
+        'http://www.haringphotography.com/wp-content/uploads/2018/08/Florida-Best-indian-wedding-photographer-4.jpg',
+        'https://media.cntraveller.in/wp-content/uploads/2022/08/Celebrations-at-Raffles.jpg',
+        'https://images.squarespace-cdn.com/content/v1/578537f5cd0f68f8a7411561/1569002290085-NDGE7SVHVLV3XL9VJ4S6/Hyatt+Regency+Scottsdale.jpg'
       ],
       excerpt: 'Our Chinese theme wedding in Delhi was unique and exciting. Chinese caterers and modern decorators created a perfect fusion.',
       content: `We wanted something different for our Delhi wedding and chose a Chinese theme. WedEase found us amazing Chinese caterers who set up live noodle bars and dim sum stations.
@@ -208,10 +208,10 @@ WedEase coordinated everything seamlessly - from theme development to ensuring c
       date: '2024-08-30',
       location: 'Chennai, Tamil Nadu',
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+        'http://www.haringphotography.com/wp-content/uploads/2018/08/Florida-Best-indian-wedding-photographer-4.jpg',
+        'https://media.cntraveller.in/wp-content/uploads/2022/08/Celebrations-at-Raffles.jpg',
+        'https://images.squarespace-cdn.com/content/v1/578537f5cd0f68f8a7411561/1569002290085-NDGE7SVHVLV3XL9VJ4S6/Hyatt+Regency+Scottsdale.jpg',
+        'https://symphonyevents.com.au/wp-content/uploads/2023/02/JKHinduWeddingHighRes-643-2-scaled.jpg'
       ],
       excerpt: 'Our Italian-themed wedding in Chennai was romantic and delicious. Italian caterers and floral decorators created a Mediterranean dream.',
       content: `Our Italian-themed wedding in Chennai was pure romance. WedEase connected us with Italian caterers who set up live pasta stations and wood-fired pizza.
@@ -236,10 +236,10 @@ WedEase coordinated everything perfectly - from theme development to ensuring cu
       date: '2024-09-14',
       location: 'Jaipur, Rajasthan',
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://media.cntraveller.in/wp-content/uploads/2022/08/Celebrations-at-Raffles.jpg',
+        'https://images.squarespace-cdn.com/content/v1/578537f5cd0f68f8a7411561/1569002290085-NDGE7SVHVLV3XL9VJ4S6/Hyatt+Regency+Scottsdale.jpg',
+        'https://symphonyevents.com.au/wp-content/uploads/2023/02/JKHinduWeddingHighRes-643-2-scaled.jpg',
+        'https://static01.nyt.com/images/2023/05/14/multimedia/FAT-INDIAN-WEDDINGS-01-hptq/FAT-INDIAN-WEDDINGS-01-hptq-superJumbo.jpg'
       ],
       excerpt: 'Our mehendi ceremony was a beautiful traditional celebration. Luxury mehendi artists created intricate designs that told our story.',
       content: `The mehendi ceremony was one of the most special parts of our wedding. WedEase helped us find luxury mehendi artists who created the most intricate designs we had ever seen.
@@ -348,21 +348,6 @@ WedEase coordinated everything seamlessly - from timing the ceremony to ensuring
                   #{tag}
                 </span>
               ))}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">Share Your Wedding Story</h3>
-            <p className="text-gray-600 mb-4">
-              Did you use WedEase for your wedding? Share your experience and inspire other couples!
-            </p>
-            <div className="flex space-x-4">
-              <button className="bg-pink-500 text-white px-6 py-2 rounded-lg hover:bg-pink-600 transition-colors">
-                Submit Your Story
-              </button>
-              <button className="border-2 border-pink-400 text-pink-600 px-6 py-2 rounded-lg hover:bg-pink-50 transition-colors">
-                Contact WedEase
-              </button>
             </div>
           </div>
         </article>

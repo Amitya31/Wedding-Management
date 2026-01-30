@@ -6,6 +6,7 @@ import VenuePage from '../Pages/VenuePage'
 import VenueDetail from '../Pages/VenuePage/VenueDetail'
 import AccessoriesMakeupPage from '../Pages/AccessoriesMakeupPage'
 import ServiceDetail from '../Pages/AccessoriesMakeupPage/ServiceDetail'
+import VendorServiceDetail from '../Pages/ServiceDetail/ServiceDetail'
 import ArtistsPage from '../Pages/ArtistsPage/index'
 import ArtistDetail from '../Pages/ArtistsPage/ArtistDetail'
 import DecoratorsPage from '../Pages/DecoratorsPage/index'
@@ -17,6 +18,7 @@ import BlogDetail from '../Pages/BlogsPage/BlogDetail'
 import VendorPage from '../Pages/VendorPage/index'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import ProtectedRoute from '../components/ProtectedRoute'
 
 
 const Layout = () => {
@@ -87,8 +89,18 @@ const router = createBrowserRouter([
         element: <BlogDetail />
       },
       {
+        path: '/service/:id/:serviceType',
+        element: <VendorServiceDetail />
+      },
+      {
         path: '/vendor',
-        element: <VendorPage />
+        element: <ProtectedRoute requiredRole="vendor" />,
+        children: [
+          {
+            index: true,
+            element: <VendorPage />
+          }
+        ]
       }
     ]
   },

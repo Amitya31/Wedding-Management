@@ -1,11 +1,25 @@
 import React, { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import BookingModal from '../../components/BookingModal'
+import MessageModal from '../../components/MessageModal'
+import ContactForm from '../../components/ContactForm'
+import SimpleImage from '../../components/SimpleImage'
 
 const ArtistDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { isAuthenticated, user } = useAuth()
   const [selectedImage, setSelectedImage] = useState(0)
   const [showReviewForm, setShowReviewForm] = useState(false)
+  const [showBookingModal, setShowBookingModal] = useState(false)
+  const [showMessageModal, setShowMessageModal] = useState(false)
+  const [showContactForm, setShowContactForm] = useState(false)
+  const [contactType, setContactType] = useState('message')
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'success' })
+  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 })
+  const [isFavorited, setIsFavorited] = useState(false)
+  const [isLoadingFavorite, setIsLoadingFavorite] = useState(false)
   const [reviewForm, setReviewForm] = useState({
     name: '',
     rating: 0,
@@ -22,10 +36,10 @@ const ArtistDetail = () => {
       price: '₹25,000 - ₹75,000',
       rating: 4.8,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://tse3.mm.bing.net/th/id/OIP.AXOKRd8W13u8LmuvIqPcdAHaEK?pid=Api&P=0&h=180',
+        'https://tse2.mm.bing.net/th/id/OIP.H3xIYQnSzmb7YdWh7ZgMFAHaEh?pid=Api&P=0&h=180',
+        'https://akm-img-a-in.tosshub.com/lingo/brt/images/story/202404/662f71d9be800-10-wedding-djs-to-book-for-your-wedding-290928589-16x9.png',
+        'https://tse3.mm.bing.net/th/id/OIP.AXOKRd8W13u8LmuvIqPcdAHaEK?pid=Api&P=0&h=180'
       ],
       description: 'Professional DJ service with latest sound equipment and extensive music library for all wedding functions.',
       features: ['Professional DJ', 'Latest Equipment', 'Extensive Music Library', 'Lighting Setup', 'MC Services', 'Custom Playlists'],
@@ -56,10 +70,10 @@ const ArtistDetail = () => {
       price: '₹30,000 - ₹80,000',
       rating: 4.9,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://tse2.mm.bing.net/th/id/OIP.H3xIYQnSzmb7YdWh7ZgMFAHaEh?pid=Api&P=0&h=180',
+        'https://akm-img-a-in.tosshub.com/lingo/brt/images/story/202404/662f71d9be800-10-wedding-djs-to-book-for-your-wedding-290928589-16x9.png',
+        'https://tse3.mm.bing.net/th/id/OIP.AXOKRd8W13u8LmuvIqPcdAHaEK?pid=Api&P=0&h=180',
+        'https://tse2.mm.bing.net/th/id/OIP.H3xIYQnSzmb7YdWh7ZgMFAHaEh?pid=Api&P=0&h=180'
       ],
       description: 'Specialized Bollywood DJ with perfect mix of traditional and contemporary wedding music.',
       features: ['Bollywood Specialist', 'Traditional & Modern Mix', 'Live Mixing', 'Dance Floor Setup', 'Request Handling', 'Energy Management'],
@@ -90,10 +104,10 @@ const ArtistDetail = () => {
       price: '₹35,000 - ₹1,00,000',
       rating: 4.7,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'https://akm-img-a-in.tosshub.com/lingo/brt/images/story/202404/662f71d9be800-10-wedding-djs-to-book-for-your-wedding-290928589-16x9.png',
+        'https://tse3.mm.bing.net/th/id/OIP.AXOKRd8W13u8LmuvIqPcdAHaEK?pid=Api&P=0&h=180',
+        'https://tse2.mm.bing.net/th/id/OIP.H3xIYQnSzmb7YdWh7ZgMFAHaEh?pid=Api&P=0&h=180',
+        'https://akm-img-a-in.tosshub.com/lingo/brt/images/story/202404/662f71d9be800-10-wedding-djs-to-book-for-your-wedding-290928589-16x9.png'
       ],
       description: 'International DJ service with global music collection and multilingual MC capabilities.',
       features: ['International Music', 'Multilingual MC', 'Global Hits', 'Cultural Integration', 'Advanced Sound System', 'Visual Effects'],
@@ -124,10 +138,10 @@ const ArtistDetail = () => {
       price: '₹40,000 - ₹1,20,000',
       rating: 4.9,
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+        'https://www.hire4event.com/blogs/wp-content/uploads/2019/05/choreo4.jpg',
+        'https://www.visionvivaah.com/blog/wp-content/uploads/2019/08/Wedding-choreographers-in-Delhi-e1567416021780.jpg',
+        'https://i.ytimg.com/vi/bdoqUbWbrpA/maxresdefault.jpg',
+        'https://im.whatshot.in/img/2021/Sep/wedding-choreography-in-india-1631515077.jpg'
       ],
       description: 'Professional dance choreography team specializing in wedding performances and couple dances.',
       features: ['Expert Choreographers', 'Couple Dance Special', 'Group Performances', 'Theme-based Routines', 'Professional Training', 'Stage Coordination'],
@@ -158,10 +172,10 @@ const ArtistDetail = () => {
       price: '₹35,000 - ₹80,000',
       rating: 4.8,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://www.visionvivaah.com/blog/wp-content/uploads/2019/08/Wedding-choreographers-in-Delhi-e1567416021780.jpg',
+        'https://i.ytimg.com/vi/bdoqUbWbrpA/maxresdefault.jpg',
+        'https://im.whatshot.in/img/2021/Sep/wedding-choreography-in-india-1631515077.jpg',
+        'https://www.hire4event.com/blogs/wp-content/uploads/2019/05/choreo4.jpg'
       ],
       description: 'Classical and traditional dance performances for authentic wedding ceremonies.',
       features: ['Classical Dance', 'Traditional Forms', 'Cultural Performances', 'Costume Design', 'Live Music Integration', 'Ritual Dances'],
@@ -192,10 +206,10 @@ const ArtistDetail = () => {
       price: '₹30,000 - ₹90,000',
       rating: 4.7,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://i.ytimg.com/vi/bdoqUbWbrpA/maxresdefault.jpg',
+        'https://im.whatshot.in/img/2021/Sep/wedding-choreography-in-india-1631515077.jpg',
+        'https://www.hire4event.com/blogs/wp-content/uploads/2019/05/choreo4.jpg',
+        'https://www.visionvivaah.com/blog/wp-content/uploads/2019/08/Wedding-choreographers-in-Delhi-e1567416021780.jpg'
       ],
       description: 'Contemporary dance group with hip-hop, salsa, and fusion performances for modern weddings.',
       features: ['Contemporary Styles', 'Hip-hop & Salsa', 'Fusion Performances', 'High Energy Shows', 'Custom Choreography', 'Professional Dancers'],
@@ -226,10 +240,10 @@ const ArtistDetail = () => {
       price: '₹5,000 - ₹25,000',
       rating: 4.9,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'http://www.aurusjewels.com/cdn/shop/articles/Mehndi_in_Indian_weddings.jpg?v=1676727334',
+        'https://i.pinimg.com/originals/39/f6/a1/39f6a17dcf2ce841225b774fe68495c0.jpg',
+        'https://www.brides.com/thmb/vqbfOD1EHQ_16-0PA2DsCzA2TAs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/harneet-and-sim-wedding-04-e906dd6a818349f3946a22199ae883ed.jpg',
+        'http://4.bp.blogspot.com/-6842IX0Gn8A/UNNUxvw3BjI/AAAAAAAABz4/_lpdQKuTnoc/s1600/1.jpg'
       ],
       description: 'Expert mehendi artists specializing in traditional, Arabic, and contemporary bridal designs.',
       features: ['Bridal Mehendi', 'Traditional Designs', 'Arabic Patterns', 'Custom Art', 'Natural Henna', 'Quick Service'],
@@ -260,10 +274,10 @@ const ArtistDetail = () => {
       price: '₹8,000 - ₹35,000',
       rating: 4.8,
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/originals/39/f6/a1/39f6a17dcf2ce841225b774fe68495c0.jpg',
+        'https://www.brides.com/thmb/vqbfOD1EHQ_16-0PA2DsCzA2TAs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/harneet-and-sim-wedding-04-e906dd6a818349f3946a22199ae883ed.jpg',
+        'http://4.bp.blogspot.com/-6842IX0Gn8A/UNNUxvw3BjI/AAAAAAAABz4/_lpdQKuTnoc/s1600/1.jpg',
+        'http://www.aurusjewels.com/cdn/shop/articles/Mehndi_in_Indian_weddings.jpg?v=1676727334'
       ],
       description: 'Luxury mehendi service with intricate designs and premium natural henna for royal bridal look.',
       features: ['Intricate Designs', 'Premium Henna', 'Royal Patterns', 'Bridal Packages', 'Family Mehendi', 'Home Service'],
@@ -294,10 +308,10 @@ const ArtistDetail = () => {
       price: '₹6,000 - ₹20,000',
       rating: 4.7,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://www.brides.com/thmb/vqbfOD1EHQ_16-0PA2DsCzA2TAs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/harneet-and-sim-wedding-04-e906dd6a818349f3946a22199ae883ed.jpg',
+        'http://4.bp.blogspot.com/-6842IX0Gn8A/UNNUxvw3BjI/AAAAAAAABz4/_lpdQKuTnoc/s1600/1.jpg',
+        'http://www.aurusjewels.com/cdn/shop/articles/Mehndi_in_Indian_weddings.jpg?v=1676727334',
+        'https://i.pinimg.com/originals/39/f6/a1/39f6a17dcf2ce841225b774fe68495c0.jpg'
       ],
       description: 'Modern mehendi artists with fusion designs, minimalist patterns, and contemporary bridal art.',
       features: ['Modern Designs', 'Minimalist Art', 'Fusion Patterns', 'Quick Application', 'Skin-friendly Henna', 'Trendy Styles'],
@@ -328,10 +342,10 @@ const ArtistDetail = () => {
       price: '₹50,000 - ₹2,00,000',
       rating: 4.9,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://eventorganizers.in/wp-content/uploads/2024/02/Photographer-in-Hyderabd.webp',
+        'https://tse3.mm.bing.net/th/id/OIP.wy2aj4ejMOeF89QF3vo0_wHaDj?pid=Api&P=0&h=180',
+        'https://media.weddingz.in/images/4321dc871ddd6bbaef194f26d6215277/10-best-wedding-photographers-for-your-south-indian-wedding.jpg',
+        'https://www.weddingstats.org/wp-content/uploads/2019/11/06-e1572878327320.jpg'
       ],
       description: 'Professional wedding photography and cinematography team capturing timeless moments with artistic vision.',
       features: ['Cinematic Videos', 'Traditional Photography', 'Drone Shots', 'Photo Albums', 'Same Day Edit', '4K Quality'],
@@ -362,10 +376,10 @@ const ArtistDetail = () => {
       price: '₹40,000 - ₹1,50,000',
       rating: 4.8,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'https://tse3.mm.bing.net/th/id/OIP.wy2aj4ejMOeF89QF3vo0_wHaDj?pid=Api&P=0&h=180',
+        'https://media.weddingz.in/images/4321dc871ddd6bbaef194f26d6215277/10-best-wedding-photographers-for-your-south-indian-wedding.jpg',
+        'https://www.weddingstats.org/wp-content/uploads/2019/11/06-e1572878327320.jpg',
+        'https://www.atlhea.in/wp-content/uploads/2020/11/31.jpg'
       ],
       description: 'Luxury wedding photography service specializing in royal themes and traditional Indian wedding ceremonies.',
       features: ['Royal Themes', 'Traditional Coverage', 'Portrait Photography', 'Pre-Wedding Shoots', 'Album Design', 'HD Quality'],
@@ -396,10 +410,10 @@ const ArtistDetail = () => {
       price: '₹35,000 - ₹1,20,000',
       rating: 4.9,
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+        'https://media.weddingz.in/images/4321dc871ddd6bbaef194f26d6215277/10-best-wedding-photographers-for-your-south-indian-wedding.jpg',
+        'https://www.weddingstats.org/wp-content/uploads/2019/11/06-e1572878327320.jpg',
+        'https://www.atlhea.in/wp-content/uploads/2020/11/31.jpg',
+        'https://tse4.mm.bing.net/th/id/OIP.mc1alybT5u-vbgblkjNKEQHaEJ?pid=Api&P=0&h=180'
       ],
       description: 'Specialist in candid wedding photography capturing natural emotions and spontaneous moments throughout the celebration.',
       features: ['Candid Shots', 'Natural Poses', 'Emotional Moments', 'Storytelling', 'Quick Delivery', 'Professional Team'],
@@ -430,10 +444,10 @@ const ArtistDetail = () => {
       price: '₹60,000 - ₹3,00,000',
       rating: 5.0,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://www.weddingstats.org/wp-content/uploads/2019/11/06-e1572878327320.jpg',
+        'https://www.atlhea.in/wp-content/uploads/2020/11/31.jpg',
+        'https://tse4.mm.bing.net/th/id/OIP.mc1alybT5u-vbgblkjNKEQHaEJ?pid=Api&P=0&h=180',
+        'https://eventorganizers.in/wp-content/uploads/2024/02/Photographer-in-Hyderabd.webp'
       ],
       description: 'Expert destination wedding photographers covering exotic locations with travel-ready equipment and international experience.',
       features: ['Destination Expert', 'Travel Ready', 'International Experience', 'Adventure Photography', 'Cultural Coverage', 'Premium Packages'],
@@ -464,10 +478,10 @@ const ArtistDetail = () => {
       price: '₹45,000 - ₹1,80,000',
       rating: 4.7,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://www.atlhea.in/wp-content/uploads/2020/11/31.jpg',
+        'https://tse4.mm.bing.net/th/id/OIP.mc1alybT5u-vbgblkjNKEQHaEJ?pid=Api&P=0&h=180',
+        'https://eventorganizers.in/wp-content/uploads/2024/02/Photographer-in-Hyderabd.webp',
+        'https://tse3.mm.bing.net/th/id/OIP.wy2aj4ejMOeF89QF3vo0_wHaDj?pid=Api&P=0&h=180'
       ],
       description: 'Creative wedding photography and videography with artistic storytelling and cinematic editing techniques.',
       features: ['Artistic Vision', 'Creative Editing', 'Short Films', 'Teaser Videos', 'Color Grading', 'Professional Equipment'],
@@ -569,6 +583,167 @@ const ArtistDetail = () => {
 
   const artist = getArtist()
 
+  const handleBookNow = (event) => {
+    if (!isAuthenticated) {
+      alert('Please login to book this artist')
+      navigate('/login')
+      return
+    }
+    
+    // Capture button position
+    const rect = event.target.getBoundingClientRect()
+    setButtonPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.top
+    })
+    
+    setShowBookingModal(true)
+  }
+
+  const handleCallNow = () => {
+    if (!isAuthenticated) {
+      alert('Please login to request a call')
+      navigate('/login')
+      return
+    }
+    setContactType('call')
+    setShowContactForm(true)
+  }
+
+  const handleSendMessage = () => {
+    if (!isAuthenticated) {
+      alert('Please login to send a message')
+      navigate('/login')
+      return
+    }
+    setShowMessageModal(true)
+  }
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ show: true, message, type })
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: 'success' })
+    }, 3000)
+  }
+
+  const handleWriteReview = () => {
+    if (!isAuthenticated) {
+      alert('Please login to write a review')
+      navigate('/login')
+      return
+    }
+    setShowReviewForm(true)
+  }
+
+  const handleFavorite = async () => {
+    if (!isAuthenticated) {
+      alert('Please login to save favorites')
+      navigate('/login')
+      return
+    }
+
+    setIsLoadingFavorite(true)
+    
+    try {
+      const token = localStorage.getItem('token')
+      
+      if (isFavorited) {
+        const response = await fetch(`http://localhost:3000/api/favourite/remove?venueId=${artist.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          setIsFavorited(false)
+          alert('Removed from favorites!')
+        } else {
+          alert(data.message || 'Failed to remove from favorites')
+        }
+      } else {
+        const requestData = {
+          venueId: artist.id,
+          venueType: 'artist',
+          notes: `Interested in ${artist.name}`
+        };
+        
+        const response = await fetch('http://localhost:3000/api/favourite/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(requestData)
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          setIsFavorited(true)
+          alert('Added to favorites!')
+        } else {
+          if (data.message.includes('already in favourites')) {
+            setIsFavorited(true)
+            alert('Already in favorites!')
+          } else {
+            alert(data.message || 'Failed to add to favorites')
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Favorite error:', error)
+      alert('Failed to update favorites. Please try again.')
+    } finally {
+      setIsLoadingFavorite(false)
+    }
+  }
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault()
+    
+    if (!isAuthenticated) {
+      alert('Please login to submit a review')
+      navigate('/login')
+      return
+    }
+
+    try {
+      const token = localStorage.getItem('token')
+      const requestData = {
+        venueId: artist.id,
+        name: reviewForm.name,
+        rating: reviewForm.rating,
+        comment: reviewForm.comment
+      };
+      
+      const response = await fetch('http://localhost:3000/api/review/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Review submitted successfully!');
+        setShowReviewForm(false)
+        setReviewForm({ name: '', rating: 0, comment: '' })
+      } else {
+        alert(data.message || 'Failed to submit review');
+      }
+    } catch (error) {
+      console.error('Review submission error:', error);
+      alert('Failed to submit review. Please try again.');
+    }
+  }
+
   if (!artist) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-100 to-pink-50 flex items-center justify-center">
@@ -583,14 +758,6 @@ const ArtistDetail = () => {
         </div>
       </div>
     )
-  }
-
-  const handleSubmitReview = (e) => {
-    e.preventDefault()
-    // Handle review submission logic here
-    console.log('Review submitted:', reviewForm)
-    setShowReviewForm(false)
-    setReviewForm({ name: '', rating: 0, comment: '' })
   }
 
   return (
@@ -609,10 +776,13 @@ const ArtistDetail = () => {
             {/* Image Gallery */}
             <div className="space-y-4">
               <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
-                <img 
+                <SimpleImage 
                   src={artist.images[selectedImage]} 
                   alt={artist.name}
                   className="w-full h-full object-cover"
+                  width={800}
+                  height={800}
+                  crop="fill"
                 />
               </div>
               <div className="grid grid-cols-4 gap-2">
@@ -624,10 +794,13 @@ const ArtistDetail = () => {
                       selectedImage === index ? 'border-pink-500' : 'border-gray-200'
                     }`}
                   >
-                    <img 
+                    <SimpleImage 
                       src={image} 
                       alt={`${artist.name} ${index + 1}`}
                       className="w-full h-full object-cover hover:scale-105 transition-transform"
+                      width={150}
+                      height={150}
+                      crop="fill"
                     />
                   </button>
                 ))}
@@ -669,11 +842,18 @@ const ArtistDetail = () => {
 
               {/* Action Buttons */}
               <div className="flex space-x-4">
-                <button className="flex-1 bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all duration-300 font-semibold">
+                <button 
+                  onClick={handleBookNow}
+                  className="flex-1 bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all duration-300 font-semibold"
+                >
                   Book Now
                 </button>
-                <button className="flex-1 border-2 border-pink-400 text-pink-600 py-3 rounded-lg hover:bg-pink-50 transition-colors font-semibold">
-                  Save to Favorites
+                <button 
+                  onClick={handleFavorite}
+                  disabled={isLoadingFavorite}
+                  className="flex-1 border-2 border-pink-400 text-pink-600 py-3 rounded-lg hover:bg-pink-50 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoadingFavorite ? 'Saving...' : isFavorited ? '❤️ Saved' : '🤍 Save to Favorites'}
                 </button>
               </div>
             </div>
@@ -708,8 +888,8 @@ const ArtistDetail = () => {
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-800">Customer Reviews</h2>
-                <button
-                  onClick={() => setShowReviewForm(!showReviewForm)}
+                <button 
+                  onClick={handleWriteReview}
                   className="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors"
                 >
                   Write a Review
@@ -836,10 +1016,16 @@ const ArtistDetail = () => {
                 </div>
               </div>
               <div className="mt-6 space-y-3">
-                <button className="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition-colors">
+                <button 
+                  onClick={handleCallNow}
+                  className="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition-colors"
+                >
                   Call Now
                 </button>
-                <button className="w-full border-2 border-pink-400 text-pink-600 py-2 rounded-lg hover:bg-pink-50 transition-colors">
+                <button 
+                  onClick={handleSendMessage}
+                  className="w-full border-2 border-pink-400 text-pink-600 py-2 rounded-lg hover:bg-pink-50 transition-colors"
+                >
                   Send Message
                 </button>
               </div>
@@ -847,6 +1033,35 @@ const ArtistDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Booking Modal */}
+      {showBookingModal && (
+        <BookingModal
+          isOpen={showBookingModal}
+          onClose={() => setShowBookingModal(false)}
+          venue={artist}
+          buttonPosition={buttonPosition}
+        />
+      )}
+
+      {/* Message Modal */}
+      <MessageModal 
+        isOpen={showMessageModal} 
+        onClose={() => setShowMessageModal(false)} 
+        venue={artist}
+      />
+
+      {/* Contact Form Modal */}
+      {showContactForm && (
+        <ContactForm
+          venueId={artist.id}
+          venueType="artist"
+          venueName={artist.name}
+          contactType={contactType}
+          onClose={() => setShowContactForm(false)}
+          onSuccess={(message) => showNotification(message)}
+        />
+      )}
     </div>
   )
 }

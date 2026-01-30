@@ -18,53 +18,44 @@ const LoginPage = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Login attempt:', formData)
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+
+      const data = await response.json()
       
-      // Check if user exists in localStorage (mock database)
-      const users = JSON.parse(localStorage.getItem('users') || '[]')
-      const foundUser = users.find(u => u.email === formData.email && u.password === formData.password)
-      
-      if (foundUser) {
-        // Create user data for authentication
-        const userData = {
-          firstName: foundUser.firstName,
-          lastName: foundUser.lastName,
-          email: foundUser.email,
-          role: foundUser.role,
-          id: foundUser.id
-        }
+      if (response.ok) {
+        // Store token
+        localStorage.setItem('token', data.token)
         
-        // Login user
-        login(userData)
+        // Login user with role information
+        login(data.user)
         setIsLoading(false)
         
-        // Redirect based on role
-        if (foundUser.role === 'vendor') {
+        // Redirect based on user type
+        if (data.user.role === 'vendor') {
           navigate('/vendor')
         } else {
           navigate('/')
         }
       } else {
-        // For demo purposes, create a mock user if not found
-        const userData = {
-          firstName: 'John',
-          lastName: 'Doe',
-          email: formData.email,
-          role: 'user',
-          id: Date.now().toString()
-        }
-        
-        login(userData)
         setIsLoading(false)
-        navigate('/')
+        alert(data.message || 'Login failed')
       }
-    }, 2000)
+    } catch (error) {
+      setIsLoading(false)
+      alert('Login failed. Please try again.')
+      console.error('Login error:', error)
+    }
   }
 
   return (

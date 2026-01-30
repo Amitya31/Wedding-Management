@@ -67,13 +67,11 @@ const RegisterPage = () => {
     }
 
     // 🔥 SAVE TOKEN + USER
-    login({
-      token: data.token,
-      user: data.user
-    });
+    localStorage.setItem('token', data.token);
+    login(data.user);
 
     // 🔥 REDIRECT
-    if (data.user.Usertype === "vendor") {
+    if (data.user.role === "vendor") {
       navigate("/vendor");
     } else {
       navigate("/");

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 
 const DecoratorsPage = () => {
+  const navigate = useNavigate()
   const [selectedType, setSelectedType] = useState('all')
   const [selectedLocation, setSelectedLocation] = useState('all')
   const [selectedPriceRange, setSelectedPriceRange] = useState('all')
@@ -21,59 +22,59 @@ const DecoratorsPage = () => {
 
   // Load vendor services
   useEffect(() => {
-    // Load mock decorators and vendor services
-    const loadDecorators = () => {
-      // Load vendor services from localStorage
-      const vendorServices = []
-      
-      // Get all localStorage keys that match vendor services pattern
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key && key.startsWith('vendor_services_')) {
-          try {
-            const services = JSON.parse(localStorage.getItem(key))
-            // Filter only decorator services
-            const decoratorServices = services.filter(service => service.category === 'decorators')
-            // Transform vendor services to decorator format
-            const transformedDecorators = decoratorServices.map(service => ({
-              id: `vendor_${service.id}`,
-              name: service.name,
-              type: 'vendor', // Custom type for vendor decorators
-              category: 'wedding',
-              price: service.price,
-              rating: 4.5, // Default rating for vendor services
-              image: service.images && service.images.length > 0 
-                ? service.images[0].preview 
-                : 'https://images.unsplash.com/photo-1519223105527-8a72762a52b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-              location: service.location.toLowerCase(),
-              description: service.description,
-              features: [
-                'Professional service',
-                'Flexible pricing',
-                'Direct vendor contact',
-                'Customizable packages',
-                'Experienced staff',
-                'Quality assurance'
-              ],
-              contactPhone: service.contactPhone,
-              contactEmail: service.contactEmail,
-              vendorName: service.vendorName,
-              isVendorService: true,
-              vendorImages: service.images || [] // Store all vendor images
-            }))
-            vendorServices.push(...transformedDecorators)
-          } catch (error) {
-            console.error('Error loading vendor services:', error)
+    // Load decorators from API
+    const loadDecorators = async () => {
+      try {
+        // Fetch vendor services (decorators)
+        const token = localStorage.getItem('token');
+        const vendorResponse = await fetch('http://localhost:3000/api/user/product/filter?vendorType=decorator', {
+          headers: {
+            'Authorization': `Bearer ${token}`
           }
-        }
-      }
+        });
+        const vendorData = await vendorResponse.json();
+        
+        // Transform vendor services to decorator format
+        const vendorDecorators = vendorData.products ? vendorData.products.map(service => ({
+          id: service._id,
+          name: service.name,
+          type: 'vendor',
+          category: 'wedding',
+          price: service.details?.startingPrice || 'Contact for pricing',
+          rating: 4.5,
+          image: service.images && service.images.length > 0 
+            ? service.images[0]
+            : 'https://images.unsplash.com/photo-1519223105527-8a72762a52b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+          description: service.description,
+          location: service.location,
+          features: [
+            'Professional service',
+            'Flexible pricing',
+            'Direct vendor contact',
+            'Customizable packages',
+            'Experienced staff',
+            'Quality assurance'
+          ],
+          contactPhone: service.contact,
+          contactEmail: service.contact,
+          vendorName: service.owner?.username || 'Vendor',
+          isVendorService: true,
+          vendorImages: service.images || [],
+          style: service.details?.style || 'Modern',
+          experience: service.details?.experience || 'Experienced',
+          vendorId: service.owner
+        })) : [];
 
-      // Combine mock decorators with vendor services
-      const allDecoratorsData = [...decorators, ...vendorServices]
-      setAllDecorators(allDecoratorsData)
+        // Combine mock decorators with vendor services
+        const allDecoratorsData = [...decorators, ...vendorDecorators]
+        setAllDecorators(allDecoratorsData)
+      } catch (error) {
+        console.error('Error loading decorators:', error)
+        // Fallback to mock decorators only
+        setAllDecorators(decorators)
+      }
     }
 
-    // Load vendor services
     loadDecorators()
   }, [])
 
@@ -106,7 +107,7 @@ const DecoratorsPage = () => {
       price: '₹2,00,000 - ₹10,00,000',
       rating: 4.9,
       location: 'delhi',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'https://getethnic.com/wp-content/uploads/2020/09/207007-AmitaSPhotography-0084-orig.jpg',
       description: 'Luxurious traditional wedding decoration with authentic themes and premium materials for royal celebrations.',
       features: ['Traditional Themes', 'Premium Materials', 'Royal Setup', 'Floral Arrangements', 'Lighting Design', 'Stage Decoration']
     },
@@ -118,7 +119,7 @@ const DecoratorsPage = () => {
       price: '₹1,50,000 - ₹8,00,000',
       rating: 4.8,
       location: 'mumbai',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://decorsutrablog.com/wp-content/uploads/2020/06/DecorSutra_Wedding-Decor-3-_Bhoomi-EVents-Planners.jpg',
       description: 'Contemporary wedding decoration with minimalist designs, modern aesthetics, and innovative concepts.',
       features: ['Modern Designs', 'Minimalist Style', 'Innovative Concepts', 'LED Lighting', 'Contemporary Themes', 'Clean Aesthetics']
     },
@@ -130,7 +131,7 @@ const DecoratorsPage = () => {
       price: '₹1,00,000 - ₹5,00,000',
       rating: 4.7,
       location: 'bangalore',
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'https://www.trendydecorator.com/wedding/2.jpg',
       description: 'Specialized floral decoration services with exotic flowers, creative arrangements, and natural themes.',
       features: ['Exotic Flowers', 'Creative Arrangements', 'Natural Themes', 'Floral Arch', 'Centerpieces', 'Garden Setup']
     },
@@ -142,7 +143,7 @@ const DecoratorsPage = () => {
       price: '₹80,000 - ₹3,00,000',
       rating: 4.6,
       location: 'goa',
-      image: 'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
+      image: 'https://indianweddingdecorators.com.au/wp-content/uploads/2022/04/Mandap-Decoration-Indian-Wedding-Decorators-Melbourne-Australia-15-1-1024x576.jpg',
       description: 'Authentic cultural decoration reflecting traditional Indian heritage and regional wedding customs.',
       features: ['Cultural Themes', 'Regional Styles', 'Traditional Elements', 'Heritage Decor', 'Ritual Setup', 'Authentic Materials']
     },
@@ -154,7 +155,7 @@ const DecoratorsPage = () => {
       price: '₹5,00,000 - ₹25,00,000',
       rating: 5.0,
       location: 'delhi',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'https://tse3.mm.bing.net/th/id/OIP.7S3-Ap9gRaopqixImJ-sogHaFj?pid=Api&P=0&h=180',
       description: 'Ultra-luxury wedding decoration with premium materials, exclusive designs, and personalized themes.',
       features: ['Luxury Materials', 'Exclusive Designs', 'Personalized Themes', 'Premium Lighting', 'Custom Setup', 'VIP Service']
     },
@@ -166,7 +167,7 @@ const DecoratorsPage = () => {
       price: '₹1,20,000 - ₹4,00,000',
       rating: 4.7,
       location: 'pune',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://tse2.mm.bing.net/th/id/OIP.y3BPpJLcFrSaILwcgTudVgHaE8?pid=Api&P=0&h=180',
       description: 'Beautiful outdoor wedding decoration with garden themes, natural elements, and open-air setups.',
       features: ['Garden Themes', 'Natural Elements', 'Outdoor Lighting', 'Tent Setup', 'Green Decor', 'Weather Protection']
     },
@@ -178,7 +179,7 @@ const DecoratorsPage = () => {
       price: '₹3,00,000 - ₹15,00,000',
       rating: 4.9,
       location: 'jaipur',
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'https://www.marriagecolours.com/images/cwd-carousel/dbg3.jpg',
       description: 'Exotic destination wedding decoration with beach themes, palace settings, and international styles.',
       features: ['Beach Themes', 'Palace Settings', 'International Styles', 'Travel Setup', 'Exotic Decor', 'Destination Expertise']
     }
@@ -338,12 +339,18 @@ const DecoratorsPage = () => {
                   )}
                 </div>
                 
-                <Link 
-                  to={`/decorators/${decorator.id}`}
+                <button 
+                  onClick={() => {
+                    if (decorator.isVendorService) {
+                      navigate(`/service/${decorator.id}/decorator`);
+                    } else {
+                      navigate(`/decorators/${decorator.id}`);
+                    }
+                  }}
                   className="block w-full bg-gradient-to-r from-pink-400 to-pink-500 text-white py-2 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all duration-300 text-center font-medium"
                 >
                   View Details
-                </Link>
+                </button>
               </div>
             </div>
           ))}

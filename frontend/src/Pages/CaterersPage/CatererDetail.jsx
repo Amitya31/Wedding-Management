@@ -1,11 +1,24 @@
 import React, { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import BookingModal from '../../components/BookingModal'
+import ContactForm from '../../components/ContactForm'
+import { favoritesAPI, reviewAPI } from '../../services/api'
 
 const CatererDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { isAuthenticated, user } = useAuth()
   const [selectedImage, setSelectedImage] = useState(0)
   const [showReviewForm, setShowReviewForm] = useState(false)
+  const [showBookingModal, setShowBookingModal] = useState(false)
+  const [showContactForm, setShowContactForm] = useState(false)
+  const [contactType, setContactType] = useState('message')
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'success' })
+  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 })
+  const [loading, setLoading] = useState(false)
+  const [isFavorited, setIsFavorited] = useState(false)
+  const [isLoadingFavorite, setIsLoadingFavorite] = useState(false)
   const [reviewForm, setReviewForm] = useState({
     name: '',
     rating: 0,
@@ -21,10 +34,10 @@ const CatererDetail = () => {
       price: '₹800 - ₹2000 per plate',
       rating: 4.9,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://cdn0.weddingwire.in/vendor/8242/3_2/960/jpg/cat5_15_368242-162236139093135.jpeg',
+        'https://www.weddingsutra.com/images/Vendor_Images/Catering/gyanjee-caterers/gyanjee-caterers-10.jpg',
+        'http://www.maharaniweddings.com/wp-content/gallery/damion-edwards-72213/indian-wedding-catering.jpg',
+        'https://www.servicesutra.com/blog/wp-content/uploads/book-caterers-in-india-for-events.jpg'
       ],
       description: 'Authentic Indian cuisine with traditional recipes and royal presentation.',
       features: ['Traditional Recipes', 'Royal Presentation', 'Live Cooking', 'Regional Specialties', 'Dessert Counter', 'Professional Staff'],
@@ -55,10 +68,10 @@ const CatererDetail = () => {
       price: '₹1200 - ₹3000 per plate',
       rating: 4.8,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://www.weddingsutra.com/images/Vendor_Images/Catering/gyanjee-caterers/gyanjee-caterers-10.jpg',
+        'http://www.maharaniweddings.com/wp-content/gallery/damion-edwards-72213/indian-wedding-catering.jpg',
+        'https://www.servicesutra.com/blog/wp-content/uploads/book-caterers-in-india-for-events.jpg',
+        'http://3.bp.blogspot.com/-fqlaXRVrT1Y/UWyt0dKAvRI/AAAAAAAAJKg/jYenkvBSORU/s640/bigrajah-food.jpg'
       ],
       description: 'Premium continental cuisine with international flavors and elegant presentation.',
       features: ['International Cuisine', 'Live Grills', 'Salad Bar', 'Cheese Counter', 'Wine Pairing', 'Fine Dining Service'],
@@ -89,10 +102,10 @@ const CatererDetail = () => {
       price: '₹700 - ₹1800 per plate',
       rating: 4.7,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'http://www.maharaniweddings.com/wp-content/gallery/damion-edwards-72213/indian-wedding-catering.jpg',
+        'https://www.servicesutra.com/blog/wp-content/uploads/book-caterers-in-india-for-events.jpg',
+        'http://3.bp.blogspot.com/-fqlaXRVrT1Y/UWyt0dKAvRI/AAAAAAAAJKg/jYenkvBSORU/s640/bigrajah-food.jpg',
+        'https://www.weddingsutra.com/images/wedding-images/entertaining/wedding-caterers/wedding-caterers-pic6.jpg'
       ],
       description: 'Authentic Chinese cuisine with live noodle bars and dim sum stations.',
       features: ['Live Noodle Bar', 'Dim Sum Station', 'Wok Cooking', 'Szechuan Specialties', 'Tea Ceremony', 'Asian Desserts'],
@@ -123,10 +136,10 @@ const CatererDetail = () => {
       price: '₹1000 - ₹2500 per plate',
       rating: 4.9,
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+        'https://www.servicesutra.com/blog/wp-content/uploads/book-caterers-in-india-for-events.jpg',
+        'http://3.bp.blogspot.com/-fqlaXRVrT1Y/UWyt0dKAvRI/AAAAAAAAJKg/jYenkvBSORU/s640/bigrajah-food.jpg',
+        'https://www.weddingsutra.com/images/wedding-images/entertaining/wedding-caterers/wedding-caterers-pic6.jpg',
+        'https://i.pinimg.com/originals/e0/33/2e/e0332e0dec9e7d52f8e36c95a7dcb136.jpg'
       ],
       description: 'Traditional Italian cuisine with live pasta stations and wood-fired pizza.',
       features: ['Live Pasta Station', 'Wood-fired Pizza', 'Antipasti Bar', 'Wine Selection', 'Tiramisu Counter', 'Al Fresco Dining'],
@@ -157,10 +170,10 @@ const CatererDetail = () => {
       price: '₹600 - ₹1500 per plate',
       rating: 4.6,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'http://3.bp.blogspot.com/-fqlaXRVrT1Y/UWyt0dKAvRI/AAAAAAAAJKg/jYenkvBSORU/s640/bigrajah-food.jpg',
+        'https://www.weddingsutra.com/images/wedding-images/entertaining/wedding-caterers/wedding-caterers-pic6.jpg',
+        'https://i.pinimg.com/originals/e0/33/2e/e0332e0dec9e7d52f8e36c95a7dcb136.jpg',
+        'https://i.pinimg.com/originals/5b/e0/04/5be004fff5f13886d74016ebf3455384.jpg'
       ],
       description: 'Vibrant Mexican cuisine with taco bars and tequila tasting.',
       features: ['Taco Bar', 'Nacho Station', 'Live Salsa', 'Tequila Tasting', 'Churro Cart', 'Mariachi Band'],
@@ -191,10 +204,10 @@ const CatererDetail = () => {
       price: '₹1500 - ₹3500 per plate',
       rating: 4.8,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://www.weddingsutra.com/images/wedding-images/entertaining/wedding-caterers/wedding-caterers-pic6.jpg',
+        'https://i.pinimg.com/originals/e0/33/2e/e0332e0dec9e7d52f8e36c95a7dcb136.jpg',
+        'https://i.pinimg.com/originals/5b/e0/04/5be004fff5f13886d74016ebf3455384.jpg',
+        'https://cdn.shortpixel.ai/spai/q_lossy+ex_1+ret_img/theweddingplanner.com.hk/wp-content/uploads/traditional_chinese_wedding_catering.jpg'
       ],
       description: 'Authentic Japanese cuisine with sushi bars and teppanyaki stations.',
       features: ['Sushi Bar', 'Teppanyaki Station', 'Tempura Counter', 'Sake Bar', 'Bento Boxes', 'Zen Garden Setup'],
@@ -225,10 +238,10 @@ const CatererDetail = () => {
       price: '₹900 - ₹2200 per plate',
       rating: 4.7,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/originals/e0/33/2e/e0332e0dec9e7d52f8e36c95a7dcb136.jpg',
+        'https://i.pinimg.com/originals/5b/e0/04/5be004fff5f13886d74016ebf3455384.jpg',
+        'https://cdn.shortpixel.ai/spai/q_lossy+ex_1+ret_img/theweddingplanner.com.hk/wp-content/uploads/traditional_chinese_wedding_catering.jpg',
+        'https://www.bharatgangaram.com/wp-content/uploads/2018/07/asian-caterers.jpg'
       ],
       description: 'Fresh Mediterranean cuisine with mezze bars and grilled specialties.',
       features: ['Mezze Bar', 'Grilled Specialties', 'Fresh Seafood', 'Olive Bar', 'Hummus Station', 'Greek Desserts'],
@@ -259,10 +272,10 @@ const CatererDetail = () => {
       price: '₹800 - ₹2000 per plate',
       rating: 4.6,
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/originals/5b/e0/04/5be004fff5f13886d74016ebf3455384.jpg',
+        'https://cdn.shortpixel.ai/spai/q_lossy+ex_1+ret_img/theweddingplanner.com.hk/wp-content/uploads/traditional_chinese_wedding_catering.jpg',
+        'https://www.bharatgangaram.com/wp-content/uploads/2018/07/asian-caterers.jpg',
+        'https://tse4.mm.bing.net/th/id/OIP.TCs7r5l73xWEXZIGJ3ilXwHaDS?pid=Api&P=0&h=180'
       ],
       description: 'Aromatic Thai cuisine with curry stations and fresh tropical fruits.',
       features: ['Curry Station', 'Fresh Spring Rolls', 'Tropical Fruits', 'Thai Tea Bar', 'Coconut Desserts', 'Lemongrass Decor'],
@@ -287,12 +300,153 @@ const CatererDetail = () => {
     }
   }
 
-  const handleSubmitReview = (e) => {
+  const showNotification = (message, type = 'success') => {
+    setNotification({ show: true, message, type })
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: 'success' })
+    }, 3000)
+  }
+
+  const handleBookNow = (event) => {
+    if (!isAuthenticated) {
+      alert('Please login to book this caterer')
+      navigate('/login')
+      return
+    }
+    
+    // Capture button position
+    const rect = event.target.getBoundingClientRect()
+    setButtonPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.top
+    })
+    
+    setShowBookingModal(true)
+  }
+
+  const handleFavorite = async () => {
+    if (!isAuthenticated) {
+      alert('Please login to save favorites')
+      navigate('/login')
+      return
+    }
+
+    setIsLoadingFavorite(true)
+    
+    try {
+      const token = localStorage.getItem('token')
+      
+      if (isFavorited) {
+        // Remove from favorites
+        console.log('Removing from favorites for caterer:', caterer.id);
+        const response = await fetch(`http://localhost:3000/api/favourite/remove?venueId=${caterer.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        
+        const data = await response.json()
+        console.log('Remove response:', data);
+
+        if (response.ok) {
+          setIsFavorited(false)
+          alert('Removed from favorites!')
+        } else {
+          alert(data.message || 'Failed to remove from favorites')
+        }
+      } else {
+        // Add to favorites
+        const requestData = {
+          venueId: caterer.id,
+          venueType: 'caterer',
+          notes: `Interested in ${caterer.name} catering services`
+        };
+        
+        console.log('Adding to favorites with data:', requestData);
+        
+        const response = await fetch('http://localhost:3000/api/favourite/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(requestData)
+        })
+        
+        const data = await response.json()
+        console.log('Add response:', data);
+
+        if (response.ok) {
+          setIsFavorited(true)
+          alert('Added to favorites!')
+        } else {
+          if (data.message.includes('already in favourites')) {
+            setIsFavorited(true)
+            alert('Already in favorites!')
+          } else {
+            alert(data.message || 'Failed to add to favorites')
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Favorite error:', error)
+      alert('Failed to update favorites. Please try again.')
+    } finally {
+      setIsLoadingFavorite(false)
+    }
+  }
+
+  const handleCallNow = () => {
+    setContactType('call')
+    setShowContactForm(true)
+  }
+
+  const handleSendMessage = () => {
+    setContactType('message')
+    setShowContactForm(true)
+  }
+
+  const handleSubmitReview = async (e) => {
     e.preventDefault()
-    // Handle review submission logic here
-    console.log('Review submitted:', reviewForm)
-    setShowReviewForm(false)
-    setReviewForm({ name: '', rating: 0, comment: '' })
+    
+    if (!reviewForm.name || !reviewForm.rating || !reviewForm.comment) {
+      showNotification('Please fill all fields', 'error')
+      return
+    }
+
+    try {
+      const token = localStorage.getItem('token')
+      const requestData = {
+        venueId: caterer.id,
+        name: reviewForm.name,
+        rating: reviewForm.rating,
+        comment: reviewForm.comment
+      };
+      
+      const response = await fetch('http://localhost:3000/api/review/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(requestData)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        showNotification('Review submitted successfully!')
+        setShowReviewForm(false)
+        setReviewForm({ name: '', rating: 0, comment: '' })
+      } else {
+        showNotification(data.message || 'Failed to submit review', 'error')
+      }
+    } catch (error) {
+      console.error('Review submission error:', error)
+      showNotification('Failed to submit review. Please try again.', 'error')
+    }
   }
 
   // Load caterer from mock data or vendor services
@@ -372,6 +526,34 @@ const CatererDetail = () => {
 
   const caterer = getCaterer()
 
+  // Check if caterer is already in favorites when component loads
+  React.useEffect(() => {
+    const checkIfFavorited = async () => {
+      if (!isAuthenticated || !caterer) return
+      
+      try {
+        const token = localStorage.getItem('token')
+        const response = await fetch('http://localhost:3000/api/favourite/user', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          const isAlreadyFavorited = data.favourites.some(
+            fav => fav.venueId.toString() === caterer.id.toString()
+          )
+          setIsFavorited(isAlreadyFavorited)
+        }
+      } catch (error) {
+        console.error('Error checking favorite status:', error)
+      }
+    }
+
+    checkIfFavorited()
+  }, [isAuthenticated, caterer])
+
   if (!caterer) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-100 to-pink-50 flex items-center justify-center">
@@ -429,11 +611,22 @@ const CatererDetail = () => {
             </div>
 
             <div className="flex space-x-4">
-              <button className="flex-1 bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 rounded-lg font-semibold">
+              <button 
+                onClick={handleBookNow}
+                className="flex-1 bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 rounded-lg font-semibold hover:from-pink-500 hover:to-pink-600 transition-all"
+              >
                 Book Now
               </button>
-              <button className="flex-1 border-2 border-pink-400 text-pink-600 py-3 rounded-lg font-semibold">
-                Save to Favorites
+              <button 
+                onClick={handleFavorite}
+                disabled={isLoadingFavorite}
+                className={`flex-1 border-2 py-3 rounded-lg transition-colors font-semibold ${
+                  isFavorited 
+                    ? 'bg-pink-100 border-pink-400 text-pink-600' 
+                    : 'border-pink-400 text-pink-600 hover:bg-pink-50'
+                } ${isLoadingFavorite ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {isLoadingFavorite ? 'Saving...' : isFavorited ? '❤️ Saved' : '🤍 Save to Favorites'}
               </button>
             </div>
           </div>
@@ -575,13 +768,54 @@ const CatererDetail = () => {
                 </div>
               </div>
               <div className="mt-6 space-y-3">
-                <button className="w-full bg-pink-500 text-white py-2 rounded-lg">Call Now</button>
-                <button className="w-full border-2 border-pink-400 text-pink-600 py-2 rounded-lg">Send Message</button>
+                <button 
+                  onClick={handleCallNow}
+                  className="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition-colors"
+                >
+                  Call Now
+                </button>
+                <button 
+                  onClick={handleSendMessage}
+                  className="w-full border-2 border-pink-400 text-pink-600 py-2 rounded-lg hover:bg-pink-50 transition-colors"
+                >
+                  Send Message
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Notification */}
+      {notification.show && (
+        <div className={`fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg ${
+          notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+        } text-white`}>
+          {notification.message}
+        </div>
+      )}
+
+      {/* Booking Modal */}
+      {showBookingModal && (
+        <BookingModal
+          isOpen={showBookingModal}
+          onClose={() => setShowBookingModal(false)}
+          venue={caterer}
+          buttonPosition={buttonPosition}
+        />
+      )}
+
+      {/* Contact Form Modal */}
+      {showContactForm && (
+        <ContactForm
+          venueId={caterer.id}
+          venueType="caterer"
+          venueName={caterer.name}
+          contactType={contactType}
+          onClose={() => setShowContactForm(false)}
+          onSuccess={(message) => showNotification(message)}
+        />
+      )}
     </div>
   )
 }

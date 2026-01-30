@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Testing API Integration</h1>
+    <button onclick="testFavorite()">Test Add to Favorites</button>
+    <button onclick="testBooking()">Test Booking</button>
+    <button onclick="testContact()">Test Contact</button>
+    <button onclick="testReview()">Test Review</button>
+    <div id="result"></div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000/api';
+
+        async function apiRequest(endpoint, options = {}) {
+            const token = 'mock-jwt-token-for-testing';
+            
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    ...options.headers,
+                },
+                ...options,
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+                const result = await response.json();
+                console.log('API Response:', result);
+                document.getElementById('result').innerHTML = JSON.stringify(result, null, 2);
+                return result;
+            } catch (error) {
+                console.error('API Error:', error);
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+
+        async function testFavorite() {
+            await apiRequest('/favourite/add', {
+                method: 'POST',
+                body: JSON.stringify({
+                    venueId: 'test-123',
+                    venueType: 'caterer',
+                    notes: 'Test favorite from API test'
+                }),
+            });
+        }
+
+        async function testBooking() {
+            await apiRequest('/booking/create', {
+                method: 'POST',
+                body: JSON.stringify({
+                    venueId: 'test-123',
+                    venueType: 'caterer',
+                    eventDate: '2024-12-25',
+                    guestCount: 100,
+                    notes: 'Test booking from API test'
+                }),
+            });
+        }
+
+        async function testContact() {
+            await apiRequest('/contact', {
+                method: 'POST',
+                body: JSON.stringify({
+                    venueId: 'test-123',
+                    venueType: 'caterer',
+                    contactType: 'message',
+                    message: 'Test message from API test',
+                    name: 'Test User',
+                    email: 'test@example.com',
+                    phone: '1234567890'
+                }),
+            });
+        }
+
+        async function testReview() {
+            await apiRequest('/review/create', {
+                method: 'POST',
+                body: JSON.stringify({
+                    vendorId: 'test-123',
+                    rating: 5,
+                    comment: 'Test review from API test',
+                    reviewerName: 'Test User'
+                }),
+            });
+        }
+    </script>
+</body>
+</html>

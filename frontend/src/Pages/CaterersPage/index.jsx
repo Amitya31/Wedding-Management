@@ -104,7 +104,7 @@ const CaterersPage = () => {
       price: '₹1800 - ₹4000 per plate',
       rating: 4.9,
       location: 'delhi',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'https://cdn0.weddingwire.in/vendor/8242/3_2/960/jpg/cat5_15_368242-162236139093135.jpeg',
       description: 'Authentic Indian cuisine with traditional recipes and royal presentation for wedding celebrations.',
       features: ['Traditional Recipes', 'Royal Presentation', 'Live Cooking', 'Regional Specialties', 'Dessert Counter', 'Professional Staff']
     },
@@ -116,7 +116,7 @@ const CaterersPage = () => {
       price: '₹2000 - ₹5000 per plate',
       rating: 4.8,
       location: 'mumbai',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://www.weddingsutra.com/images/Vendor_Images/Catering/gyanjee-caterers/gyanjee-caterers-10.jpg',
       description: 'Premium continental cuisine with international flavors and elegant presentation for modern weddings.',
       features: ['International Cuisine', 'Live Grills', 'Salad Bar', 'Cheese Counter', 'Wine Pairing', 'Fine Dining Service']
     },
@@ -128,7 +128,7 @@ const CaterersPage = () => {
       price: '₹700 - ₹1800 per plate',
       rating: 4.7,
       location: 'bangalore',
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'http://www.maharaniweddings.com/wp-content/gallery/damion-edwards-72213/indian-wedding-catering.jpg',
       description: 'Authentic Chinese cuisine with live noodle bars and dim sum stations for unique wedding experiences.',
       features: ['Live Noodle Bar', 'Dim Sum Station', 'Wok Cooking', 'Szechuan Specialties', 'Tea Ceremony', 'Asian Desserts']
     },
@@ -140,7 +140,7 @@ const CaterersPage = () => {
       price: '₹1000 - ₹2500 per plate',
       rating: 4.8,
       location: 'chennai',
-      image: 'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
+      image: 'https://www.servicesutra.com/blog/wp-content/uploads/book-caterers-in-india-for-events.jpg',
       description: 'Traditional Italian cuisine with live pasta stations and wood-fired pizza for romantic weddings.',
       features: ['Live Pasta Station', 'Wood-fired Pizza', 'Antipasti Bar', 'Wine Selection', 'Tiramisu Counter', 'Al Fresco Dining']
     },
@@ -152,7 +152,7 @@ const CaterersPage = () => {
       price: '₹600 - ₹1500 per plate',
       rating: 4.6,
       location: 'hyderabad',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'http://3.bp.blogspot.com/-fqlaXRVrT1Y/UWyt0dKAvRI/AAAAAAAAJKg/jYenkvBSORU/s640/bigrajah-food.jpg',
       description: 'Vibrant Mexican cuisine with taco bars and tequila tasting for fun-filled wedding celebrations.',
       features: ['Taco Bar', 'Nacho Station', 'Live Salsa', 'Tequila Tasting', 'Churro Cart', 'Mariachi Band']
     },
@@ -164,7 +164,7 @@ const CaterersPage = () => {
       price: '₹1500 - ₹3500 per plate',
       rating: 4.7,
       location: 'bangalore',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://www.weddingsutra.com/images/wedding-images/entertaining/wedding-caterers/wedding-caterers-pic6.jpg',
       description: 'Authentic Japanese cuisine with sushi bars and teppanyaki stations for elegant wedding dining.',
       features: ['Sushi Bar', 'Teppanyaki Station', 'Tempura Counter', 'Sake Bar', 'Bento Boxes', 'Zen Garden Setup']
     },
@@ -175,7 +175,7 @@ const CaterersPage = () => {
       category: 'wedding',
       price: '₹900 - ₹2200 per plate',
       rating: 4.7,
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/originals/e0/33/2e/e0332e0dec9e7d52f8e36c95a7dcb136.jpg',
       description: 'Fresh Mediterranean cuisine with mezze bars and grilled specialties for healthy wedding feasts.',
       features: ['Mezze Bar', 'Grilled Specialties', 'Fresh Seafood', 'Olive Bar', 'Hummus Station', 'Greek Desserts']
     },
@@ -186,7 +186,7 @@ const CaterersPage = () => {
       category: 'wedding',
       price: '₹800 - ₹2000 per plate',
       rating: 4.6,
-      image: 'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/originals/5b/e0/04/5be004fff5f13886d74016ebf3455384.jpg',
       description: 'Aromatic Thai cuisine with curry stations and fresh tropical fruits for exotic wedding flavors.',
       features: ['Curry Station', 'Fresh Spring Rolls', 'Tropical Fruits', 'Thai Tea Bar', 'Coconut Desserts', 'Lemongrass Decor']
     }

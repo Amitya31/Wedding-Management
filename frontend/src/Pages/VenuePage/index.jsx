@@ -55,7 +55,7 @@ const VenuePage = () => {
       price: '₹50,000 - ₹2,00,000',
       capacity: '500-1000 guests',
       rating: 4.8,
-      image: 'https://media-api.xogrp.com/images/a46789ba-034f-4da5-9cb4-22c940a86632',
+      image: 'https://www.weddingsutra.com/images/the-taj-mahal-palace-img4.jpg',
       description: 'Luxurious banquet hall with modern amenities'
     },
     {
@@ -66,7 +66,7 @@ const VenuePage = () => {
       price: '₹80,000 - ₹3,00,000',
       capacity: '200-500 guests',
       rating: 4.9,
-      image: 'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
+      image: 'https://www.eternalweddingz.in/storage/venue_images/Qibfkip8GWSzxPLRPu8Ad4ZO8wLHrMpxcddwUeVv.webp',
       description: 'Beautiful beachfront villa perfect for intimate weddings'
     },
     {
@@ -77,7 +77,7 @@ const VenuePage = () => {
       price: '₹40,000 - ₹1,50,000',
       capacity: '300-800 guests',
       rating: 4.6,
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'http://www.udaipurweddings.com/wp-content/uploads/2017/11/13-3.jpg',
       description: 'Spacious farmhouse with lush green surroundings'
     },
     {
@@ -88,7 +88,7 @@ const VenuePage = () => {
       price: '₹30,000 - ₹1,00,000',
       capacity: '200-600 guests',
       rating: 4.7,
-      image: 'https://2.bp.blogspot.com/-TjYHq_ucrL0/WUoGMcO6J0I/AAAAAAAAaAc/ekhT4kar0QkbqMMYPkDItLQgaC6KOFbUACLcBGAs/s1600/westin2.jpg',
+      image: 'https://www.weddingsbyneerajkamra.com/uploads/BlogPictures/default/udaivilas-hotel-udaipur.png',
       description: 'Romantic garden venue with beautiful floral arrangements'
     },
     {
@@ -99,7 +99,7 @@ const VenuePage = () => {
       price: '₹60,000 - ₹2,50,000',
       capacity: '400-900 guests',
       rating: 4.5,
-      image: 'https://tse3.mm.bing.net/th/id/OIP.TpdKJQLNtTda-7aeCmQDNgHaE7?pid=Api&P=0&h=180',
+      image: 'https://tse1.mm.bing.net/th/id/OIP.SVY9BpvNHP2MV-or8q3sSwHaE7?pid=Api&P=0&h=180',
       description: 'Traditional hall with modern facilities'
     },
     {
@@ -110,7 +110,7 @@ const VenuePage = () => {
       price: '₹45,000 - ₹1,80,000',
       capacity: '250-700 guests',
       rating: 4.8,
-      image: 'https://tse3.mm.bing.net/th/id/OIP.9V09noDMgcgRdXU9Sk4-ZQHaFj?pid=Api&P=0&h=180',
+      image: 'https://tse3.mm.bing.net/th/id/OIP.cMQWata8uis-1qbdG_H0SAHaDO?pid=Api&P=0&h=180',
       description: 'Elegant garden resort with stunning landscapes'
     },
     {
@@ -121,7 +121,7 @@ const VenuePage = () => {
       price: '₹70,000 - ₹2,80,000',
       capacity: '350-900 guests',
       rating: 4.9,
-      image: 'https://tse3.mm.bing.net/th/id/OIP.rEHhL0woFTdVZkln-NVXPQHaD3?pid=Api&P=0&h=180',
+      image: 'https://media.weddingz.in/images/9bfe5bc7b49ce9f9385d0d9d2a3ca68f/148636425.jpg',
       description: 'Premium farmhouse with lake views'
     },
     {
@@ -132,7 +132,7 @@ const VenuePage = () => {
       price: '₹90,000 - ₹3,50,000',
       capacity: '150-400 guests',
       rating: 4.7,
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/736x/57/ea/99/57ea9907aed0b584bc0679de72f59e5c.jpg',
       description: 'Stunning villa with panoramic ocean views'
     },
       {
@@ -143,7 +143,7 @@ const VenuePage = () => {
       price: '₹90,000 - ₹3,50,000',
       capacity: '300-400 guests',
       rating: 4.5,
-      image: 'https://www.wedresearch.net/wp-content/uploads/2017/07/grand-ballroom.jpg',
+      image: 'https://media.weddingz.in/images/0684600e5ddd40a785d4f86d333dbcae/the-grand-orient-resort-dera-bassi-chandigarh.jpg',
       description: 'Luxurios Experience and Comfort'
     },
       {
@@ -154,56 +154,58 @@ const VenuePage = () => {
       price: '₹1,00,000 - ₹3,50,000',
       capacity: '250-400 guests',
       rating: 4.9,
-      image: 'https://tse2.mm.bing.net/th/id/OIP.7PNEGXyHecELJg0lKD6IUgHaD4?pid=Api&P=0&h=180',
+      image: 'https://www.weddingsutra.com/images/the-taj-mahal-palace-img4.jpg',
       description: 'Top Class Services'
     }
   ]
 
   useEffect(() => {
-    // Load mock venues and vendor services
-    const loadVenues = () => {
-      // Load vendor services from localStorage
-      const vendorServices = []
-      
-      // Get all localStorage keys that match vendor services pattern
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key && key.startsWith('vendor_services_')) {
-          try {
-            const services = JSON.parse(localStorage.getItem(key))
-            // Filter only venue services
-            const venueServices = services.filter(service => service.category === 'venues')
-            // Transform vendor services to venue format
-            const transformedVenues = venueServices.map(service => ({
-              id: `vendor_${service.id}`,
-              name: service.name,
-              type: 'vendor', // Custom type for vendor venues
-              location: service.location,
-              price: service.price,
-              rating: 4.5, // Default rating for vendor services
-              image: service.images && service.images.length > 0 
-                ? service.images[0].preview 
-                : 'https://images.unsplash.com/photo-1519223105527-8a72762a52b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-              capacity: '100-500', // Default capacity
-              description: service.description,
-              contactPhone: service.contactPhone,
-              contactEmail: service.contactEmail,
-              vendorName: service.vendorName,
-              isVendorService: true,
-              vendorImages: service.images || [] // Store all vendor images
-            }))
-            vendorServices.push(...transformedVenues)
-          } catch (error) {
-            console.error('Error loading vendor services:', error)
+    // Load venues from API
+    const loadVenues = async () => {
+      try {
+        // Fetch vendor services (venues)
+        const token = localStorage.getItem('token');
+        const vendorResponse = await fetch('http://localhost:3000/api/user/product/filter?vendorType=venue', {
+          headers: {
+            'Authorization': `Bearer ${token}`
           }
-        }
-      }
+        });
+        const vendorData = await vendorResponse.json();
+        
+        // Transform vendor services to venue format
+        const vendorVenues = vendorData.products ? vendorData.products.map(service => ({
+          id: service._id,
+          name: service.name,
+          type: 'vendor', // Custom type for vendor venues
+          location: service.location,
+          price: service.details?.pricePerDay || 'Contact for pricing',
+          rating: 4.5, // Default rating for vendor services
+          image: service.images && service.images.length > 0 
+            ? service.images[0]
+            : 'https://www.eternalweddingz.in/storage/venue_images/Qibfkip8GWSzxPLRPu8Ad4ZO8wLHrMpxcddwUeVv.webp',
+          capacity: service.details?.rooms || '100-500', // Use rooms from details
+          description: service.description,
+          contactPhone: service.contact,
+          contactEmail: service.contact,
+          vendorName: service.owner?.username || 'Vendor',
+          isVendorService: true,
+          vendorImages: service.images || [], // Store all vendor images
+          venueType: service.details?.venueType || 'Hall',
+          vendorId: service.owner
+        })) : [];
 
-      // Combine mock venues with vendor services
-      const allVenues = [...mockVenues, ...vendorServices]
-      setVenues(allVenues)
-      setFilteredVenues(allVenues)
-      setLoading(false)
+        // Combine mock venues with vendor services (for now, until we have mock venues in backend)
+        const allVenues = [...mockVenues, ...vendorVenues]
+        setVenues(allVenues)
+        setFilteredVenues(allVenues)
+        setLoading(false)
+      } catch (error) {
+        console.error('Error loading venues:', error)
+        // Fallback to mock venues only
+        setVenues(mockVenues)
+        setFilteredVenues(mockVenues)
+        setLoading(false)
+      }
     }
 
     // Simulate API call
@@ -403,7 +405,13 @@ const VenuePage = () => {
                 </div>
                 
                 <button 
-                  onClick={() => navigate(`/venues/${venue.id}`)}
+                  onClick={() => {
+                    if (venue.isVendorService) {
+                      navigate(`/service/${venue.id}/venue`);
+                    } else {
+                      navigate(`/venues/${venue.id}`);
+                    }
+                  }}
                   className="block w-full bg-gradient-to-r from-pink-400 to-pink-500 text-white py-2 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all duration-300 text-center font-medium"
                 >
                   View Details

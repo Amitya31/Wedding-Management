@@ -28,59 +28,66 @@ const AccessoriesMakeupPage = () => {
 
   // Load vendor services
   useEffect(() => {
-    // Load mock services and vendor services
-    const loadServices = () => {
-      // Load vendor services from localStorage
-      const vendorServices = []
-      
-      // Get all localStorage keys that match vendor services pattern
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key && key.startsWith('vendor_services_')) {
-          try {
-            const services = JSON.parse(localStorage.getItem(key))
-            // Filter only accessories-makeup services
-            const accessoryServices = services.filter(service => service.category === 'accessories-makeup')
-            // Transform vendor services to accessories format
-            const transformedServices = accessoryServices.map(service => ({
-              id: `vendor_${service.id}`,
-              name: service.name,
-              type: 'vendor', // Custom type for vendor services
-              category: 'accessories-makeup',
-              price: service.price,
-              rating: 4.5, // Default rating for vendor services
-              image: service.images && service.images.length > 0 
-                ? service.images[0].preview 
-                : 'https://images.unsplash.com/photo-1519223105527-8a72762a52b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-              location: service.location.toLowerCase(),
-              description: service.description,
-              features: [
-                'Professional service',
-                'Flexible pricing',
-                'Direct vendor contact',
-                'Customizable packages',
-                'Experienced staff',
-                'Quality assurance'
-              ],
-              contactPhone: service.contactPhone,
-              contactEmail: service.contactEmail,
-              vendorName: service.vendorName,
-              isVendorService: true,
-              vendorImages: service.images || [] // Store all vendor images
-            }))
-            vendorServices.push(...transformedServices)
-          } catch (error) {
-            console.error('Error loading vendor services:', error)
+    // Load services from API
+    const loadServices = async () => {
+      try {
+        // Fetch vendor services (accessories)
+        const token = localStorage.getItem('token');
+        const vendorResponse = await fetch('http://localhost:3000/api/user/product/filter?vendorType=accessories', {
+          headers: {
+            'Authorization': `Bearer ${token}`
           }
-        }
-      }
+        });
+        const vendorData = await vendorResponse.json();
+        
+        console.log('Vendor accessories response:', vendorData);
+        
+        // Transform vendor services to accessories format
+        const vendorAccessories = vendorData.products ? vendorData.products.map(service => {
+          console.log('Transforming service:', service);
+          const transformed = {
+            id: service._id,
+            name: service.name,
+            type: 'vendor',
+            price: service.details?.priceRange || 'Contact for pricing',
+            rating: 4.5,
+            image: service.images && service.images.length > 0 
+              ? service.images[0]
+              : 'https://images.unsplash.com/photo-1596462502278-27e138ce9f76?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+            description: service.description,
+            location: service.location,
+            features: [
+              'Professional service',
+              'Flexible pricing',
+              'Direct vendor contact',
+              'Customizable packages',
+              'Experienced staff',
+              'Quality assurance'
+            ],
+            contactPhone: service.contact,
+            contactEmail: service.contact,
+            vendorName: service.owner?.username || 'Vendor',
+            isVendorService: true,
+            vendorImages: service.images || [],
+            category: service.details?.category || 'Bride',
+            gender: service.details?.gender || 'Bride',
+            priceRange: service.details?.priceRange || 'Contact for pricing',
+            vendorId: service.owner
+          };
+          console.log('Transformed service:', transformed);
+          return transformed;
+        }) : [];
 
-      // Combine mock services with vendor services
-      const allServicesData = [...services, ...vendorServices]
-      setAllServices(allServicesData)
+        // Combine mock services with vendor services
+        const allServicesData = [...services, ...vendorAccessories]
+        setAllServices(allServicesData)
+      } catch (error) {
+        console.error('Error loading accessories:', error)
+        // Fallback to mock services only
+        setAllServices(services)
+      }
     }
 
-    // Load vendor services
     loadServices()
   }, [])
 
@@ -94,7 +101,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹1,00,000 - ₹10,00,000',
       rating: 4.9,
       location: 'delhi',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/736x/b8/f9/72/b8f972d3b219305b4591d26e27a9bce3.jpg',
       description: 'Exquisite diamond bridal jewellery sets featuring premium quality diamonds in 18K gold settings. Includes necklace, earrings, maang tikka, bangles, and rings for complete bridal elegance.',
       features: ['Certified Diamonds', '18K Gold Settings', 'Custom Designs', 'Free Insurance', 'Lifetime Warranty']
     },
@@ -106,7 +113,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹50,000 - ₹5,00,000',
       rating: 4.8,
       location: 'mumbai',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://tse3.mm.bing.net/th/id/OIP.X5WQbbH6QTLNXUNweVz3UwHaJW?pid=Api&P=0&h=180',
       description: 'Traditional gold bridal jewellery with intricate craftsmanship. Features 22K gold pieces with kundan, polki, and meenakari work for timeless bridal beauty.',
       features: ['22K Pure Gold', 'Kundan & Polki Work', 'Traditional Designs', 'BIS Hallmarked', 'Exchange Policy']
     },
@@ -118,7 +125,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹15,000 - ₹50,000',
       rating: 4.7,
       location: 'hyderabad',
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'https://shop.southindiajewels.com/wp-content/uploads/2023/05/Gold-Plated-Temple-Bridal-Jewellery-Set-01.jpg',
       description: 'Elegant silver jewellery perfect for pre-wedding functions. Includes oxidized silver, sterling silver, and silver-plated pieces with contemporary designs.',
       features: ['925 Sterling Silver', 'Oxidized Finish', 'Contemporary Designs', 'Hypoallergenic', 'Affordable Luxury']
     },
@@ -130,7 +137,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹8,000 - ₹35,000',
       rating: 4.5,
       location: 'jaipur',
-      image: 'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
+      image: 'https://img.freepik.com/premium-photo/traditional-golden-indian-wedding-jewelry-wallpaper-bride-beauty-generative-ai_753390-3395.jpg',
       description: 'Trendy fashion jewellery sets for mehendi and sangeet functions. Includes American diamond pieces with modern designs and vibrant colors.',
       features: ['American Diamond', 'Lightweight Designs', 'Colorful Stones', 'Affordable Sets', 'Modern Styles']
     },
@@ -142,7 +149,8 @@ const AccessoriesMakeupPage = () => {
       price: '₹15,000 - ₹45,000',
       rating: 4.7,
       location: 'chennai',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+        image: 'https://i.pinimg.com/736x/2a/38/dd/2a38dd7dd5827a2e8b7951c69d9ed87c.jpg',
+      
       description: 'Traditional South Indian bridal makeup featuring bold eyes, defined brows, and classic red lips. Includes saree draping assistance and hair styling.',
       features: ['HD Makeup', 'Waterproof', 'Traditional Look', 'Saree Draping', 'Hair Styling', 'Trial Session']
     },
@@ -154,7 +162,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹30,000 - ₹1,00,000',
       rating: 4.8,
       location: 'delhi',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/originals/49/ad/38/49ad38a3ec50860b2ea8b3dac6104882.jpg',
       description: 'Modern North Indian bridal makeup with smoky eyes, contoured cheeks, and nude lips. Includes dupatta setting and jewelry assistance.',
       features: ['Airbrush Makeup', 'Contouring', 'Smoky Eyes', 'Dupatta Setting', 'Jewelry Assistance', 'Touch-up Kit']
     },
@@ -166,7 +174,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹20,000 - ₹60,000',
       rating: 4.8,
       location: 'delhi',
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'https://stylesatlife.com/wp-content/uploads/2019/06/North-Muslim-Bridal-Makeup.jpg',
       description: 'Elegant Muslim bridal makeup focusing on natural beauty with defined eyes, soft contouring, and subtle lips. Includes hijab styling assistance.',
       features: ['Natural Look', 'Hijab Styling', 'Long-lasting', 'Premium Products', 'Photography Ready', 'Home Service']
     },
@@ -178,7 +186,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹35,000 - ₹80,000',
       rating: 4.8,
       location: 'bangalore',
-      image: 'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/originals/c9/8f/21/c98f21fcbcc503258829e2f8ba766364.jpg',
       description: 'Sophisticated Christian bridal makeup with soft romantic looks, rosy cheeks, and natural lips. Includes veil placement and bouquet coordination.',
       features: ['Romantic Look', 'Veil Placement', 'Bouquet Coordination', 'Premium Brands', 'Multiple Looks', 'Video Ready']
     },
@@ -190,7 +198,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹8,000 - ₹25,000',
       rating: 4.3,
       location: 'goa',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'https://tse4.mm.bing.net/th/id/OIP.5VfqSfRTBnP1tBMsCR4Y3gHaEK?pid=Api&P=0&h=180     ',
       description: 'Vibrant makeup for sangeet night with glitter, bold colors, and dance-proof formula. Includes quick touch-up service for multiple outfit changes.',
       features: ['Glitter Makeup', 'Dance-Proof', 'Bold Colors', 'Quick Touch-ups', 'Multiple Looks', 'Waterproof']
     },
@@ -202,7 +210,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹5,000 - ₹15,000',
       rating: 4.4,
       location: 'jaipur',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://media.weddingz.in/images/d4d1c5c3e15d298ad37c0ab79cfc0bb4/Henna-for-all-5.jpg',
       description: 'Natural, subtle makeup perfect for mehendi ceremonies. Focus on enhancing natural beauty with light, fresh looks.',
       features: ['Natural Look', 'Light Coverage', 'Mehendi-Friendly', 'Long-lasting', 'Subtle Colors', 'Quick Service']
     },
@@ -214,7 +222,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹18,000 - ₹55,000',
       rating: 4.6,
       location: 'mumbai',
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/736x/02/44/95/02449589da45a0e98ea0c78e1033814b.jpg',
       description: 'Glamorous reception makeup with evening-appropriate colors and styles. Includes photography-ready finish and touch-up kit.',
       features: ['Evening Glamour', 'Photography Ready', 'Touch-up Kit', 'Long-lasting', 'Elegant Styles', 'Premium Products']
     },
@@ -226,7 +234,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹50,000 - ₹5,00,000',
       rating: 4.9,
       location: 'delhi',
-      image: 'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
+      image: 'https://getethnic.com/wp-content/uploads/2021/08/Maroon-Bridal-Lehenga-6.jpg',
       description: 'Designer bridal lehengas featuring premium fabrics, intricate embroidery, and modern silhouettes. Includes custom fitting and designer consultation.',
       features: ['Designer Labels', 'Custom Fitting', 'Premium Fabrics', 'Intricate Embroidery', 'Matching Accessories', 'Alterations Included']
     },
@@ -238,7 +246,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹25,000 - ₹3,00,000',
       rating: 4.7,
       location: 'bangalore',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/originals/e7/92/bb/e792bb3dbff1f1fe08cbf750558d0a5a.png',
       description: 'Traditional and modern bridal sarees including Kanjivaram, Banarasi, and designer sarees. Comes with blouse stitching and draping service.',
       features: ['Traditional Weaves', 'Blouse Stitching', 'Draping Service', 'Authentic Silk', 'Contemporary Designs', 'Preservation Tips']
     },
@@ -250,7 +258,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹30,000 - ₹4,00,000',
       rating: 4.8,
       location: 'mumbai',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/originals/22/70/8a/22708a48beaf07622db9006fe0ffac97.jpg',
       description: 'Elegant bridal gowns for modern brides. Features international designer collections with custom fitting and luxury fabrics.',
       features: ['Designer Gowns', 'Custom Fitting', 'Luxury Fabrics', 'International Brands', 'Modern Styles', 'Alterations Included']
     },
@@ -262,7 +270,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹20,000 - ₹2,00,000',
       rating: 4.8,
       location: 'delhi',
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/736x/e1/2c/10/e12c10751c04bc578129763666f87caa.jpg',
       description: 'Elegant groom sherwanis with premium fabrics, detailed embroidery, and modern cuts. Includes matching accessories and custom tailoring.',
       features: ['Designer Sherwanis', 'Custom Tailoring', 'Matching Accessories', 'Premium Fabrics', 'Modern Cuts', 'Express Delivery']
     },
@@ -274,7 +282,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹15,000 - ₹1,00,000',
       rating: 4.6,
       location: 'bangalore',
-      image: 'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
+      image: 'https://media.gqindia.com/wp-content/uploads/amp-stories/9-stylish-wedding-suits-men/assets/5.jpeg',
       description: 'Premium groom suits from international brands with custom fitting. Includes tuxedos, three-piece suits, and modern formal wear.',
       features: ['International Brands', 'Custom Fitting', 'Multiple Styles', 'Premium Fabrics', 'Accessories Included', 'Dry Cleaning Service']
     },
@@ -286,7 +294,7 @@ const AccessoriesMakeupPage = () => {
       price: '₹10,000 - ₹30,000',
       rating: 4.4,
       location: 'kolkata',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/originals/90/35/2a/90352af340b51ea12a109caaefbd3f20.jpg',
       description: 'Traditional groom wear including dhotis, kurta sets, and regional attire. Perfect for traditional wedding ceremonies.',
       features: ['Traditional Attire', 'Regional Styles', 'Comfortable Fabrics', 'Custom Stitching', 'Cultural Designs', 'Affordable Options']
     }
@@ -363,6 +371,9 @@ const AccessoriesMakeupPage = () => {
   const ServiceCard = ({ service }) => {
     const [imageError, setImageError] = useState(false)
     const [imageLoading, setImageLoading] = useState(true)
+
+    console.log('ServiceCard rendering with service:', service);
+    console.log('ServiceCard image URL:', service.image);
 
     return (
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:-translate-y-2">
@@ -442,7 +453,13 @@ const AccessoriesMakeupPage = () => {
           </div>
           
           <button 
-            onClick={() => navigate(`/accessories-makeup/${service.id}`)}
+            onClick={() => {
+              if (service.isVendorService) {
+                navigate(`/service/${service.id}/accessories`);
+              } else {
+                navigate(`/accessories-makeup/${service.id}`);
+              }
+            }}
             className="w-full bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 px-6 rounded-xl font-semibold hover:from-pink-500 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
           >
             View Details

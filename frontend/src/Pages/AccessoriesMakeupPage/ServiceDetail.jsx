@@ -1,11 +1,24 @@
 import React, { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import BookingModal from '../../components/BookingModal'
+import MessageModal from '../../components/MessageModal'
+import ContactForm from '../../components/ContactForm'
 
 const ServiceDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { isAuthenticated, user } = useAuth()
   const [selectedImage, setSelectedImage] = useState(0)
   const [showReviewForm, setShowReviewForm] = useState(false)
+  const [showBookingModal, setShowBookingModal] = useState(false)
+  const [showMessageModal, setShowMessageModal] = useState(false)
+  const [showContactForm, setShowContactForm] = useState(false)
+  const [contactType, setContactType] = useState('message')
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'success' })
+  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 })
+  const [isFavorited, setIsFavorited] = useState(false)
+  const [isLoadingFavorite, setIsLoadingFavorite] = useState(false)
   const [reviewForm, setReviewForm] = useState({
     name: '',
     rating: 0,
@@ -22,10 +35,10 @@ const ServiceDetail = () => {
       price: '₹1,00,000 - ₹10,00,000',
       rating: 4.9,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/736x/b8/f9/72/b8f972d3b219305b4591d26e27a9bce3.jpg',
+        'https://tse2.mm.bing.net/th/id/OIP.ypY2kkrz6hzgDLBi9xVL5gHaE8?pid=Api&P=0&h=180',
+        'http://3.bp.blogspot.com/-IdfomL4SDZE/UgDS2-IJ7bI/AAAAAAAAACM/3yhgNhQI9Zs/s1600/north+indian+bridal+jewellery+kunbdan+set+(1).png',
+        'https://i.pinimg.com/originals/c3/09/7a/c3097a7f3eb1390b417e2352301d0d46.jpg'
       ],
       description: 'Exquisite diamond bridal jewellery sets featuring premium quality diamonds in 18K gold settings. Each piece is carefully crafted by master jewelers with decades of experience in creating timeless bridal masterpieces.',
       features: ['Certified Diamonds', '18K Gold Settings', 'Custom Designs', 'Free Insurance', 'Lifetime Warranty'],
@@ -56,10 +69,10 @@ const ServiceDetail = () => {
       price: '₹50,000 - ₹5,00,000',
       rating: 4.8,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://tse3.mm.bing.net/th/id/OIP.X5WQbbH6QTLNXUNweVz3UwHaJW?pid=Api&P=0&h=180',
+        'https://tse1.mm.bing.net/th/id/OIP.QcPntkgjuknrnh0tIF6f6gHaHa?pid=Api&P=0&h=180',
+        'https://img.freepik.com/premium-photo/traditional-golden-indian-wedding-jewelry-wallpaper-bride-beauty-generative-ai_753390-3395.jpg',
+        'https://tse1.mm.bing.net/th/id/OIP.YIgsKEQ3XMQrewv_D0UE6AHaHa?pid=Api&P=0&w=300&h=300'
       ],
       description: 'Traditional gold bridal jewellery with intricate craftsmanship. Features 22K gold pieces with kundan, polki, and meenakari work for timeless bridal beauty.',
       features: ['22K Pure Gold', 'Kundan & Polki Work', 'Traditional Designs', 'BIS Hallmarked', 'Exchange Policy'],
@@ -90,10 +103,10 @@ const ServiceDetail = () => {
       price: '₹5,000 - ₹50,000',
       rating: 4.6,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'https://shop.southindiajewels.com/wp-content/uploads/2023/05/Gold-Plated-Temple-Bridal-Jewellery-Set-01.jpg',
+        'https://i.pinimg.com/originals/d1/3e/cf/d13ecfba9a727a3685a8e51e481fed73.jpg',
+        'https://i.pinimg.com/736x/b8/f9/72/b8f972d3b219305b4591d26e27a9bce3.jpg',
+        'https://tse2.mm.bing.net/th/id/OIP.ypY2kkrz6hzgDLBi9xVL5gHaE8?pid=Api&P=0&h=180'
       ],
       description: 'Elegant silver jewellery perfect for pre-wedding functions. Includes oxidized silver, sterling silver, and silver-plated pieces with contemporary designs.',
       features: ['925 Sterling Silver', 'Oxidized Finish', 'Contemporary Designs', 'Hypoallergenic', 'Affordable Luxury'],
@@ -124,10 +137,10 @@ const ServiceDetail = () => {
       price: '₹25,000 - ₹75,000',
       rating: 4.9,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://images.unsplash.com/photo-1596944924647-513ab86f7b61?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+        'https://images.unsplash.com/photo-1608344757155-ee2086585c61?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+        'https://images.unsplash.com/photo-1515372039744-b8e02a3ae846?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+        'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
       ],
       description: 'Traditional South Indian bridal makeup featuring bold eyes, defined brows, and classic red lips. Includes saree draping assistance and hair styling.',
       features: ['HD Makeup', 'Waterproof', 'Traditional Look', 'Saree Draping', 'Hair Styling', 'Trial Session'],
@@ -158,10 +171,10 @@ const ServiceDetail = () => {
       price: '₹8,000 - ₹35,000',
       rating: 4.5,
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+        'http://3.bp.blogspot.com/-IdfomL4SDZE/UgDS2-IJ7bI/AAAAAAAAACM/3yhgNhQI9Zs/s1600/north+indian+bridal+jewellery+kunbdan+set+(1).png',
+        'https://i.pinimg.com/originals/c3/09/7a/c3097a7f3eb1390b417e2352301d0d46.jpg',
+        'https://tse3.mm.bing.net/th/id/OIP.X5WQbbH6QTLNXUNweVz3UwHaJW?pid=Api&P=0&h=180',
+        'https://tse1.mm.bing.net/th/id/OIP.QcPntkgjuknrnh0tIF6f6gHaHa?pid=Api&P=0&h=180'
       ],
       description: 'Trendy fashion jewellery sets for mehendi and sangeet functions. Includes American diamond pieces with modern designs and vibrant colors.',
       features: ['American Diamond', 'Lightweight Designs', 'Colorful Stones', 'Affordable Sets', 'Modern Styles'],
@@ -192,10 +205,11 @@ const ServiceDetail = () => {
       price: '₹25,000 - ₹75,000',
       rating: 4.9,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/originals/49/ad/38/49ad38a3ec50860b2ea8b3dac6104882.jpg ',
+        'https://i.pinimg.com/originals/56/d7/51/56d7517111a2b7027bd86f188c7ac6ab.jpg ',
+             'https://i.pinimg.com/originals/14/03/c9/1403c9c979129e8661ad6f395216a4c2.jpg ',
+             'https://i.pinimg.com/736x/2a/38/dd/2a38dd7dd5827a2e8b7951c69d9ed87c.jpg'
+               
       ],
       description: 'Traditional South Indian bridal makeup featuring bold eyes, defined brows, and classic red lips. Includes saree draping assistance and hair styling.',
       features: ['HD Makeup', 'Waterproof', 'Traditional Look', 'Saree Draping', 'Hair Styling', 'Trial Session'],
@@ -226,10 +240,8 @@ const ServiceDetail = () => {
       price: '₹30,000 - ₹1,00,000',
       rating: 4.8,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://preview.redd.it/royal-reception-makeup-look-for-the-bride-graceful-gorgeous-v0-d34t666vtr1b1.jpg?width=1080&crop=smart&auto=webp&s=727e2367f190b2ae10c0ee1559b11f6a8b4c55a6'
+        
       ],
       description: 'Modern North Indian bridal makeup with smoky eyes, contoured cheeks, and nude lips. Includes dupatta setting and jewelry assistance.',
       features: ['Airbrush Makeup', 'Contouring', 'Smoky Eyes', 'Dupatta Setting', 'Jewelry Assistance', 'Touch-up Kit'],
@@ -260,10 +272,7 @@ const ServiceDetail = () => {
       price: '₹20,000 - ₹60,000',
       rating: 4.7,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'https://stylesatlife.com/wp-content/uploads/2019/06/North-Muslim-Bridal-Makeup.jpg'
       ],
       description: 'Elegant Muslim bridal makeup focusing on natural beauty with defined eyes, soft contouring, and subtle lips. Includes hijab styling assistance.',
       features: ['Natural Look', 'Hijab Styling', 'Long-lasting', 'Premium Products', 'Photography Ready', 'Home Service'],
@@ -294,10 +303,7 @@ const ServiceDetail = () => {
       price: '₹35,000 - ₹80,000',
       rating: 4.8,
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/originals/c9/8f/21/c98f21fcbcc503258829e2f8ba766364.jpg'
       ],
       description: 'Sophisticated Christian bridal makeup with soft romantic looks, rosy cheeks, and natural lips. Includes veil placement and bouquet coordination.',
       features: ['Romantic Look', 'Veil Placement', 'Bouquet Coordination', 'Premium Brands', 'Multiple Looks', 'Video Ready'],
@@ -328,10 +334,8 @@ const ServiceDetail = () => {
       price: '₹8,000 - ₹25,000',
       rating: 4.5,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+       'https://tse4.mm.bing.net/th/id/OIP.5VfqSfRTBnP1tBMsCR4Y3gHaEK?pid=Api&P=0&h=180'
+       
       ],
       description: 'Vibrant makeup for sangeet night with glitter, bold colors, and dance-proof formula. Includes quick touch-up service for multiple outfit changes.',
       features: ['Glitter Makeup', 'Dance-Proof', 'Bold Colors', 'Quick Touch-ups', 'Multiple Looks', 'Waterproof'],
@@ -362,10 +366,8 @@ const ServiceDetail = () => {
       price: '₹5,000 - ₹15,000',
       rating: 4.4,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+       'https://media.weddingz.in/images/d4d1c5c3e15d298ad37c0ab79cfc0bb4/Henna-for-all-5.jpg'
+        
       ],
       description: 'Natural, subtle makeup perfect for mehendi ceremonies. Focus on enhancing natural beauty with light, fresh looks.',
       features: ['Natural Look', 'Light Coverage', 'Mehendi-Friendly', 'Long-lasting', 'Subtle Colors', 'Quick Service'],
@@ -396,10 +398,7 @@ const ServiceDetail = () => {
       price: '₹12,000 - ₹35,000',
       rating: 4.6,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/736x/02/44/95/02449589da45a0e98ea0c78e1033814b.jpg'
       ],
       description: 'Glamorous reception makeup with evening-appropriate colors and styles. Includes photography-ready finish and touch-up kit.',
       features: ['Evening Glamour', 'Photography Ready', 'Touch-up Kit', 'Long-lasting', 'Elegant Styles', 'Premium Products'],
@@ -430,10 +429,7 @@ const ServiceDetail = () => {
       price: '₹50,000 - ₹5,00,000',
       rating: 4.9,
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+        'https://getethnic.com/wp-content/uploads/2021/08/Maroon-Bridal-Lehenga-6.jpg'
       ],
       description: 'Designer bridal lehengas featuring premium fabrics, intricate embroidery, and modern silhouettes. Includes custom fitting and designer consultation.',
       features: ['Designer Labels', 'Custom Fitting', 'Premium Fabrics', 'Intricate Embroidery', 'Matching Accessories', 'Alterations Included'],
@@ -464,10 +460,7 @@ const ServiceDetail = () => {
       price: '₹25,000 - ₹3,00,000',
       rating: 4.7,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/originals/e7/92/bb/e792bb3dbff1f1fe08cbf750558d0a5a.png'
       ],
       description: 'Traditional and modern bridal sarees including Kanjivaram, Banarasi, and designer sarees. Comes with blouse stitching and draping service.',
       features: ['Traditional Weaves', 'Blouse Stitching', 'Draping Service', 'Authentic Silk', 'Contemporary Designs', 'Preservation Tips'],
@@ -498,10 +491,7 @@ const ServiceDetail = () => {
       price: '₹30,000 - ₹4,00,000',
       rating: 4.8,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/originals/22/70/8a/22708a48beaf07622db9006fe0ffac97.jpg'
       ],
       description: 'Elegant bridal gowns for modern brides. Features international designer collections with custom fitting and luxury fabrics.',
       features: ['Designer Gowns', 'Custom Fitting', 'Luxury Fabrics', 'International Brands', 'Modern Styles', 'Alterations Included'],
@@ -532,10 +522,7 @@ const ServiceDetail = () => {
       price: '₹20,000 - ₹2,00,000',
       rating: 4.8,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/736x/e1/2c/10/e12c10751c04bc578129763666f87caa.jpg'
       ],
       description: 'Elegant groom sherwanis with premium fabrics, detailed embroidery, and modern cuts. Includes matching accessories and custom tailoring.',
       features: ['Designer Sherwanis', 'Custom Tailoring', 'Matching Accessories', 'Premium Fabrics', 'Modern Cuts', 'Express Delivery'],
@@ -566,10 +553,7 @@ const ServiceDetail = () => {
       price: '₹15,000 - ₹1,00,000',
       rating: 4.6,
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+       'https://media.gqindia.com/wp-content/uploads/amp-stories/9-stylish-wedding-suits-men/assets/5.jpeg'
       ],
       description: 'Premium groom suits from international brands with custom fitting. Includes tuxedos, three-piece suits, and modern formal wear.',
       features: ['International Brands', 'Custom Fitting', 'Multiple Styles', 'Premium Fabrics', 'Accessories Included', 'Dry Cleaning Service'],
@@ -600,10 +584,7 @@ const ServiceDetail = () => {
       price: '₹10,000 - ₹80,000',
       rating: 4.5,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://i.pinimg.com/originals/90/35/2a/90352af340b51ea12a109caaefbd3f20.jpg'
       ],
       description: 'Traditional groom wear including dhotis, kurta sets, and regional attire. Perfect for traditional wedding ceremonies.',
       features: ['Traditional Attire', 'Regional Styles', 'Comfortable Fabrics', 'Custom Stitching', 'Cultural Designs', 'Affordable Options'],
@@ -703,9 +684,174 @@ const ServiceDetail = () => {
     return serviceDetails[id]
   }
 
-  const venue = getService()
+  const service = getService()
 
-  if (!venue) {
+  const handleBookNow = (event) => {
+    if (!isAuthenticated) {
+      alert('Please login to book this service')
+      navigate('/login')
+      return
+    }
+    
+    // Capture button position
+    const rect = event.target.getBoundingClientRect()
+    setButtonPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.top
+    })
+    
+    setShowBookingModal(true)
+  }
+
+  const handleCallNow = () => {
+    if (!isAuthenticated) {
+      alert('Please login to request a call')
+      navigate('/login')
+      return
+    }
+    setContactType('call')
+    setShowContactForm(true)
+  }
+
+  const handleSendMessage = () => {
+    if (!isAuthenticated) {
+      alert('Please login to send a message')
+      navigate('/login')
+      return
+    }
+    setShowMessageModal(true)
+  }
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ show: true, message, type })
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: 'success' })
+    }, 3000)
+  }
+
+  const handleWriteReview = () => {
+    if (!isAuthenticated) {
+      alert('Please login to write a review')
+      navigate('/login')
+      return
+    }
+    setShowReviewForm(true)
+  }
+
+  const handleFavorite = async () => {
+    if (!isAuthenticated) {
+      alert('Please login to save favorites')
+      navigate('/login')
+      return
+    }
+
+    setIsLoadingFavorite(true)
+    
+    try {
+      const token = localStorage.getItem('token')
+      
+      if (isFavorited) {
+        // Remove from favorites
+        const response = await fetch(`http://localhost:3000/api/favourite/remove?venueId=${service.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          setIsFavorited(false)
+          alert('Removed from favorites!')
+        } else {
+          alert(data.message || 'Failed to remove from favorites')
+        }
+      } else {
+        // Add to favorites
+        const requestData = {
+          venueId: service.id,
+          venueType: 'accessories-makeup',
+          notes: `Interested in ${service.name}`
+        };
+        
+        const response = await fetch('http://localhost:3000/api/favourite/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(requestData)
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          setIsFavorited(true)
+          alert('Added to favorites!')
+        } else {
+          if (data.message.includes('already in favourites')) {
+            setIsFavorited(true)
+            alert('Already in favorites!')
+          } else {
+            alert(data.message || 'Failed to add to favorites')
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Favorite error:', error)
+      alert('Failed to update favorites. Please try again.')
+    } finally {
+      setIsLoadingFavorite(false)
+    }
+  }
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault()
+    
+    if (!isAuthenticated) {
+      alert('Please login to submit a review')
+      navigate('/login')
+      return
+    }
+
+    try {
+      const token = localStorage.getItem('token')
+      const requestData = {
+        venueId: service.id,
+        name: reviewForm.name,
+        rating: reviewForm.rating,
+        comment: reviewForm.comment
+      };
+      
+      console.log('Submitting review:', requestData);
+      
+      const response = await fetch('http://localhost:3000/api/review/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Review submitted successfully!');
+        setShowReviewForm(false)
+        setReviewForm({ name: '', rating: 0, comment: '' })
+      } else {
+        alert(data.message || 'Failed to submit review');
+      }
+    } catch (error) {
+      console.error('Review submission error:', error);
+      alert('Failed to submit review. Please try again.');
+    }
+  }
+
+  if (!service) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-100 to-pink-50 flex items-center justify-center">
         <div className="text-center">
@@ -735,13 +881,13 @@ const ServiceDetail = () => {
             <div className="space-y-4">
               <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
                 <img 
-                  src={venue.images[selectedImage]} 
-                  alt={venue.name}
+                  src={service.images[selectedImage]} 
+                  alt={service.name}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="grid grid-cols-4 gap-2">
-                {(venue.images || []).map((image, index) => (
+                {(service.images || []).map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
@@ -751,7 +897,7 @@ const ServiceDetail = () => {
                   >
                     <img 
                       src={image} 
-                      alt={`${venue.name} ${index + 1}`}
+                      alt={`${service.name} ${index + 1}`}
                       className="w-full h-full object-cover hover:scale-105 transition-transform"
                     />
                   </button>
@@ -764,23 +910,23 @@ const ServiceDetail = () => {
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <span className="px-3 py-1 bg-pink-100 text-pink-600 rounded-full text-sm font-semibold">
-                    {venue.isVendorService ? 'Vendor Service' : (venue.type.charAt(0).toUpperCase() + venue.type.slice(1))}
+                    {service.isVendorService ? 'Vendor Service' : (service.type.charAt(0).toUpperCase() + service.type.slice(1))}
                   </span>
                   <div className="flex items-center">
                     <span className="text-yellow-400 text-lg">★</span>
-                    <span className="text-gray-700 ml-1 font-semibold">{venue.rating}</span>
+                    <span className="text-gray-700 ml-1 font-semibold">{service.rating}</span>
                   </div>
                 </div>
-                <h1 className="text-4xl font-bold text-gray-800 mb-4">{venue.name}</h1>
-                <p className="text-2xl text-pink-600 font-bold mb-4">{venue.price}</p>
-                <p className="text-gray-600 leading-relaxed">{venue.description}</p>
+                <h1 className="text-4xl font-bold text-gray-800 mb-4">{service.name}</h1>
+                <p className="text-2xl text-pink-600 font-bold mb-4">{service.price}</p>
+                <p className="text-gray-600 leading-relaxed">{service.description}</p>
               </div>
 
               {/* Features */}
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-3">Features & Services</h3>
                 <div className="grid grid-cols-2 gap-3">
-                  {(venue.features || []).map((feature, index) => (
+                  {(service.features || []).map((feature, index) => (
                     <div key={index} className="flex items-center space-x-2">
                       <span className="text-pink-500">✓</span>
                       <span className="text-gray-700">{feature}</span>
@@ -791,11 +937,18 @@ const ServiceDetail = () => {
 
               {/* Action Buttons */}
               <div className="flex space-x-4">
-                <button className="flex-1 bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all duration-300 font-semibold">
+                <button 
+                  onClick={handleBookNow}
+                  className="flex-1 bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all duration-300 font-semibold"
+                >
                   Book Now
                 </button>
-                <button className="flex-1 border-2 border-pink-400 text-pink-600 py-3 rounded-lg hover:bg-pink-50 transition-colors font-semibold">
-                  Save to Favorites
+                <button 
+                  onClick={handleFavorite}
+                  disabled={isLoadingFavorite}
+                  className="flex-1 border-2 border-pink-400 text-pink-600 py-3 rounded-lg hover:bg-pink-50 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoadingFavorite ? 'Saving...' : isFavorited ? '❤️ Saved' : '🤍 Save to Favorites'}
                 </button>
               </div>
             </div>
@@ -809,15 +962,15 @@ const ServiceDetail = () => {
           {/* Detailed Description */}
           <div className="lg:col-span-2 space-y-8">
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">About {venue.name}</h2>
-              <p className="text-gray-600 leading-relaxed">{venue.detailedDescription}</p>
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">About {service.name}</h2>
+              <p className="text-gray-600 leading-relaxed">{service.detailedDescription}</p>
             </div>
 
             {/* Amenities */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Services Included</h2>
               <div className="grid grid-cols-2 gap-4">
-                {(venue.amenities || []).map((amenity, index) => (
+                {(service.amenities || []).map((amenity, index) => (
                   <div key={index} className="flex items-center space-x-3 p-3 bg-pink-50 rounded-lg">
                     <span className="text-pink-500 text-xl">✨</span>
                     <span className="text-gray-700">{amenity}</span>
@@ -831,7 +984,7 @@ const ServiceDetail = () => {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-800">Customer Reviews</h2>
                 <button 
-                  onClick={() => setShowReviewForm(!showReviewForm)}
+                  onClick={handleWriteReview}
                   className="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors"
                 >
                   Write a Review
@@ -903,7 +1056,7 @@ const ServiceDetail = () => {
               )}
 
               <div className="space-y-4">
-                {(venue.reviews || []).map((review, index) => (
+                {(service.reviews || []).map((review, index) => (
                   <div key={index} className="border-b border-gray-200 pb-4">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-semibold text-gray-800">{review.name}</h4>
@@ -919,34 +1072,67 @@ const ServiceDetail = () => {
             </div>
           </div>
 
+          {/* Policies */}
+          <div className="bg-white rounded-2xl shadow-lg p-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Booking Policies</h3>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Booking Amount:</span>
+                <span className="text-gray-800 font-semibold">{service.policies?.bookingAmount || '25% Advance'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Cancellation:</span>
+                <span className="text-gray-800 font-semibold">{service.policies?.cancellationPolicy || '7 days before - 80% refund'}</span>
+              </div>
+              {service.policies?.trialPolicy && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Trial Policy:</span>
+                  <span className="text-gray-800 font-semibold">{service.policies.trialPolicy}</span>
+                </div>
+              )}
+              {service.policies?.alterationPolicy && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Alteration Policy:</span>
+                  <span className="text-gray-800 font-semibold">{service.policies.alterationPolicy}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Contact Information */}
           <div className="space-y-8">
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <h3 className="text-2xl font-bold text-gray-800 mb-4">📞 Contact Information</h3>
-              {venue.isVendorService && venue.vendorName && (
+              {service.isVendorService && service.vendorName && (
                 <div className="mb-4 p-3 bg-green-50 rounded-lg">
-                  <div className="text-sm font-semibold text-green-800">🏢 Listed by: {venue.vendorName}</div>
+                  <div className="text-sm font-semibold text-green-800">🏢 Listed by: {service.vendorName}</div>
                 </div>
               )}
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <span className="text-pink-500">📞</span>
-                  <span className="text-gray-700">{venue.contactPhone || venue.contact.phone}</span>
+                  <span className="text-gray-700">{service.contactPhone || service.contact.phone}</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <span className="text-pink-500">✉️</span>
-                  <span className="text-gray-700">{venue.contactEmail || venue.contact.email}</span>
+                  <span className="text-gray-700">{service.contactEmail || service.contact.email}</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <span className="text-pink-500">📍</span>
-                  <span className="text-gray-700">{venue.isVendorService ? venue.contact.address : venue.contact.address}</span>
+                  <span className="text-gray-700">{service.isVendorService ? service.contact.address : service.contact.address}</span>
                 </div>
               </div>
               <div className="mt-6 space-y-3">
-                <button className="w-full bg-pink-500 text-white py-3 rounded-lg hover:bg-pink-600 transition-colors">
+                <button 
+                  onClick={handleCallNow}
+                  className="w-full bg-pink-500 text-white py-3 rounded-lg hover:bg-pink-600 transition-colors"
+                >
                   Call Now
                 </button>
-                <button className="w-full border-2 border-pink-400 text-pink-600 py-3 rounded-lg hover:bg-pink-50 transition-colors">
+                <button 
+                  onClick={handleSendMessage}
+                  className="w-full border-2 border-pink-400 text-pink-600 py-3 rounded-lg hover:bg-pink-50 transition-colors"
+                >
                   Send Message
                 </button>
               </div>
@@ -954,6 +1140,33 @@ const ServiceDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Booking Modal */}
+      <BookingModal 
+        isOpen={showBookingModal} 
+        onClose={() => setShowBookingModal(false)} 
+        venue={service}
+        buttonPosition={buttonPosition}
+      />
+
+      {/* Message Modal */}
+      <MessageModal 
+        isOpen={showMessageModal} 
+        onClose={() => setShowMessageModal(false)} 
+        venue={service}
+      />
+
+      {/* Contact Form Modal */}
+      {showContactForm && (
+        <ContactForm
+          venueId={service.id}
+          venueType="accessories-makeup"
+          venueName={service.name}
+          contactType={contactType}
+          onClose={() => setShowContactForm(false)}
+          onSuccess={(message) => showNotification(message)}
+        />
+      )}
     </div>
   )
 }

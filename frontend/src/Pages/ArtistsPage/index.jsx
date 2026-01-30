@@ -49,7 +49,7 @@ const ArtistsPage = () => {
       price: '₹20,000 - ₹60,000',
       rating: 4.8,
       location: 'delhi',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'https://tse3.mm.bing.net/th/id/OIP.AXOKRd8W13u8LmuvIqPcdAHaEK?pid=Api&P=0&h=180',
       description: 'Professional DJ service with latest sound equipment and extensive music library for all wedding functions.',
       features: ['Professional DJ', 'Latest Equipment', 'Extensive Music Library', 'Lighting Setup', 'MC Services', 'Custom Playlists']
     },
@@ -61,7 +61,7 @@ const ArtistsPage = () => {
       price: '₹30,000 - ₹85,000',
       rating: 4.7,
       location: 'mumbai',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://tse2.mm.bing.net/th/id/OIP.H3xIYQnSzmb7YdWh7ZgMFAHaEh?pid=Api&P=0&h=180',
       description: 'Specialized Bollywood DJ with perfect mix of traditional and contemporary wedding music.',
       features: ['Bollywood Specialist', 'Traditional & Modern Mix', 'Live Mixing', 'Dance Floor Setup', 'Request Handling', 'Energy Management']
     },
@@ -73,7 +73,7 @@ const ArtistsPage = () => {
       price: '₹35,000 - ₹1,00,000',
       rating: 4.7,
       location: 'bangalore',
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'https://akm-img-a-in.tosshub.com/lingo/brt/images/story/202404/662f71d9be800-10-wedding-djs-to-book-for-your-wedding-290928589-16x9.png',
       description: 'International DJ service with global music collection and multilingual MC capabilities.',
       features: ['International Music', 'Multilingual MC', 'Global Hits', 'Cultural Integration', 'Advanced Sound System', 'Visual Effects']
     },
@@ -85,7 +85,7 @@ const ArtistsPage = () => {
       price: '₹40,000 - ₹1,20,000',
       rating: 4.9,
       location: 'jaipur',
-      image: 'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
+      image: 'https://www.hire4event.com/blogs/wp-content/uploads/2019/05/choreo4.jpg',
       description: 'Professional dance choreography team specializing in wedding performances and couple dances.',
       features: ['Expert Choreographers', 'Couple Dance Special', 'Group Performances', 'Theme-based Routines', 'Professional Training', 'Stage Coordination']
     },
@@ -97,7 +97,7 @@ const ArtistsPage = () => {
       price: '₹35,000 - ₹90,000',
       rating: 4.8,
       location: 'udaipur',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'https://www.visionvivaah.com/blog/wp-content/uploads/2019/08/Wedding-choreographers-in-Delhi-e1567416021780.jpg',
       description: 'Classical and traditional dance performances for authentic wedding ceremonies.',
       features: ['Classical Dance', 'Traditional Forms', 'Cultural Performances', 'Costume Design', 'Live Music Integration', 'Ritual Dances']
     },
@@ -109,7 +109,7 @@ const ArtistsPage = () => {
       price: '₹30,000 - ₹90,000',
       rating: 4.7,
       location: 'pune',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://i.ytimg.com/vi/bdoqUbWbrpA/maxresdefault.jpg',
       description: 'Contemporary dance group with hip-hop, salsa, and fusion performances for modern weddings.',
       features: ['Contemporary Styles', 'Hip-hop & Salsa', 'Fusion Performances', 'High Energy Shows', 'Custom Choreography', 'Professional Dancers']
     },
@@ -121,7 +121,7 @@ const ArtistsPage = () => {
       price: '₹5,000 - ₹25,000',
       rating: 4.9,
       location: 'chennai',
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'http://www.aurusjewels.com/cdn/shop/articles/Mehndi_in_Indian_weddings.jpg?v=1676727334',
       description: 'Expert mehendi artists specializing in traditional, Arabic, and contemporary bridal designs.',
       features: ['Bridal Mehendi', 'Traditional Designs', 'Arabic Patterns', 'Custom Art', 'Natural Henna', 'Quick Service']
     },
@@ -133,7 +133,7 @@ const ArtistsPage = () => {
       price: '₹8,000 - ₹35,000',
       rating: 4.8,
       location: 'kolkata',
-      image: 'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
+      image: 'https://i.pinimg.com/originals/39/f6/a1/39f6a17dcf2ce841225b774fe68495c0.jpg',
       description: 'Luxury mehendi service with intricate designs and premium natural henna for royal bridal look.',
       features: ['Intricate Designs', 'Premium Henna', 'Royal Patterns', 'Bridal Packages', 'Family Mehendi', 'Home Service']
     },
@@ -145,7 +145,7 @@ const ArtistsPage = () => {
       price: '₹6,000 - ₹20,000',
       rating: 4.7,
       location: 'hyderabad',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'https://www.brides.com/thmb/vqbfOD1EHQ_16-0PA2DsCzA2TAs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/harneet-and-sim-wedding-04-e906dd6a818349f3946a22199ae883ed.jpg',
       description: 'Modern mehendi artists with fusion designs, minimalist patterns, and contemporary bridal art.',
       features: ['Modern Designs', 'Minimalist Art', 'Fusion Patterns', 'Quick Application', 'Skin-friendly Henna', 'Trendy Styles']
     },
@@ -157,7 +157,7 @@ const ArtistsPage = () => {
       price: '₹50,000 - ₹2,00,000',
       rating: 4.9,
       location: 'delhi',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://eventorganizers.in/wp-content/uploads/2024/02/Photographer-in-Hyderabd.webp',
       description: 'Professional wedding photography and cinematography team capturing timeless moments with artistic vision.',
       features: ['Cinematic Videos', 'Traditional Photography', 'Drone Shots', 'Photo Albums', 'Same Day Edit', '4K Quality']
     },
@@ -169,7 +169,7 @@ const ArtistsPage = () => {
       price: '₹40,000 - ₹1,50,000',
       rating: 4.8,
       location: 'mumbai',
-      image: 'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
+      image: 'https://tse3.mm.bing.net/th/id/OIP.wy2aj4ejMOeF89QF3vo0_wHaDj?pid=Api&P=0&h=180',
       description: 'Luxury wedding photography service specializing in royal themes and traditional Indian wedding ceremonies.',
       features: ['Royal Themes', 'Traditional Coverage', 'Portrait Photography', 'Pre-Wedding Shoots', 'Album Design', 'HD Quality']
     },
@@ -181,7 +181,7 @@ const ArtistsPage = () => {
       price: '₹35,000 - ₹1,20,000',
       rating: 4.9,
       location: 'jaipur',
-      image: 'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
+      image: 'https://media.weddingz.in/images/4321dc871ddd6bbaef194f26d6215277/10-best-wedding-photographers-for-your-south-indian-wedding.jpg',
       description: 'Specialist in candid wedding photography capturing natural emotions and spontaneous moments throughout the celebration.',
       features: ['Candid Shots', 'Natural Poses', 'Emotional Moments', 'Storytelling', 'Quick Delivery', 'Professional Team']
     },
@@ -193,7 +193,7 @@ const ArtistsPage = () => {
       price: '₹60,000 - ₹3,00,000',
       rating: 5.0,
       location: 'goa',
-      image: 'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
+      image: 'https://www.weddingstats.org/wp-content/uploads/2019/11/06-e1572878327320.jpg',
       description: 'Expert destination wedding photographers covering exotic locations with travel-ready equipment and international experience.',
       features: ['Destination Expert', 'Travel Ready', 'International Experience', 'Adventure Photography', 'Cultural Coverage', 'Premium Packages']
     },
@@ -205,7 +205,7 @@ const ArtistsPage = () => {
       price: '₹45,000 - ₹1,80,000',
       rating: 4.7,
       location: 'udaipur',
-      image: 'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
+      image: 'https://www.atlhea.in/wp-content/uploads/2020/11/31.jpg',
       description: 'Creative wedding photography and videography with artistic storytelling and cinematic editing techniques.',
       features: ['Artistic Vision', 'Creative Editing', 'Short Films', 'Teaser Videos', 'Color Grading', 'Professional Equipment']
     }

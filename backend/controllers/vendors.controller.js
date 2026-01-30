@@ -1,8 +1,27 @@
 import fs from "fs";
 import { VendorModel } from "../models/vendor.model.js";
 import { uploadToCloudinary } from "../utils/cloudinaryUpload.js";
-import { deleteFromCloudinary } from "../utils/cloudinaryDelete.js";
 
+
+export const getVendorProducts = async (req, res) => {
+    try {
+        const products = await VendorModel.find({ owner: req.user.userId })
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            count: products.length,
+            products
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch vendor products",
+            error: error.message
+        });
+    }
+};
 
 export const CreateProduct = async (req, res) => {
     try {
@@ -28,8 +47,16 @@ export const CreateProduct = async (req, res) => {
         const imageUrls = [];
 
         for (const file of req.files) {
-            const result = await uploadToCloudinary(file.buffer);
-            imageUrls.push(result.secure_url);
+            try {
+                const result = await uploadToCloudinary(file.buffer);
+                imageUrls.push(result.secure_url);
+            } catch (error) {
+                console.error('Error uploading to Cloudinary:', error);
+                return res.status(500).json({
+                    success: false,
+                    message: "Failed to upload images to Cloudinary"
+                });
+            }
         }
 
 
@@ -63,6 +90,9 @@ export const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
 
+        console.log('Delete product request - ID:', id);
+        console.log('User from middleware:', req.user);
+
         const product = await VendorModel.findById(id);
         if (!product) {
             return res.status(404).json({
@@ -71,18 +101,23 @@ export const deleteProduct = async (req, res) => {
             });
         }
 
+        console.log('Product found:', product);
+        console.log('Product owner:', product.owner);
+        console.log('Product owner type:', typeof product.owner);
+        console.log('User ID:', req.user.userId);
+        console.log('User ID type:', typeof req.user.userId);
+        console.log('Comparison:', product.owner.toString(), '===', req.user.userId.toString(), product.owner.toString() === req.user.userId.toString());
+
         // Ownership check
-        if (product.owner.toString() !== req.user.userId) {
+        if (product.owner.toString() !== req.user.userId.toString()) {
             return res.status(403).json({
                 success: false,
                 message: "You are not allowed to delete this product"
             });
         }
 
-        // Delete images from Cloudinary
-        for (const imageUrl of product.images) {
-            await deleteFromCloudinary(imageUrl);
-        }
+        // Note: Cloudinary images are not deleted automatically to prevent accidental data loss
+        // In production, you might want to implement Cloudinary image deletion here
 
         await product.deleteOne();
 
@@ -105,6 +140,9 @@ export const updateProduct = async (req, res) => {
         const { id } = req.params;
         const { name, location, vendorType, details, contact } = req.body;
 
+        console.log('Update product request - ID:', id);
+        console.log('User from middleware:', req.user);
+
         const product = await VendorModel.findById(id);
         if (!product) {
             return res.status(404).json({
@@ -113,8 +151,13 @@ export const updateProduct = async (req, res) => {
             });
         }
 
+        console.log('Product found:', product);
+        console.log('Product owner:', product.owner);
+        console.log('User ID:', req.user.userId);
+        console.log('Comparison:', product.owner.toString(), '===', req.user.userId.toString(), product.owner.toString() === req.user.userId.toString());
+
         // Ownership check
-        if (product.owner.toString() !== req.user.userId) {
+        if (product.owner.toString() !== req.user.userId.toString()) {
             return res.status(403).json({
                 success: false,
                 message: "You are not allowed to update this product"
@@ -141,16 +184,22 @@ export const updateProduct = async (req, res) => {
 
         // If new images uploaded → replace old ones
         if (req.files && req.files.length > 0) {
-            // Delete old images
-            for (const imageUrl of product.images) {
-                await deleteFromCloudinary(imageUrl);
-            }
+            // Note: Old Cloudinary images are not deleted automatically to prevent accidental data loss
+            // In production, you might want to implement Cloudinary image deletion here
 
-            // Upload new images
+            // Upload new images to Cloudinary
             const imageUrls = [];
             for (const file of req.files) {
-                const result = await uploadToCloudinary(file.buffer);
-                imageUrls.push(result.secure_url);
+                try {
+                    const result = await uploadToCloudinary(file.buffer);
+                    imageUrls.push(result.secure_url);
+                } catch (error) {
+                    console.error('Error uploading to Cloudinary:', error);
+                    return res.status(500).json({
+                        success: false,
+                        message: "Failed to upload images to Cloudinary"
+                    });
+                }
             }
 
             product.images = imageUrls;

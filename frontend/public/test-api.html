@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Testing API Integration</h1>
+    <button onclick="testFavorite()">Test Add to Favorites</button>
+    <button onclick="testBooking()">Test Booking</button>
+    <button onclick="testContact()">Test Contact</button>
+    <button onclick="testReview()">Test Review</button>
+    <button onclick="testVendorCreate()">Test Vendor Create</button>
+    <div id="result"></div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000/api';
+
+        async function apiRequest(endpoint, options = {}) {
+            const token = 'mock-jwt-token-for-testing';
+            
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    ...options.headers,
+                },
+                ...options,
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+                const result = await response.json();
+                console.log('API Response:', result);
+                document.getElementById('result').innerHTML = JSON.stringify(result, null, 2);
+                return result;
+            } catch (error) {
+                console.error('API Error:', error);
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+
+        async function testFavorite() {
+            await apiRequest('/favourite/add', {
+                method: 'POST',
+                body: JSON.stringify({
+                    venueId: 'test-123',
+                    venueType: 'caterer',
+                    notes: 'Test favorite from API test'
+                }),
+            });
+        }
+
+        async function testBooking() {
+            await apiRequest('/booking/create', {
+                method: 'POST',
+                body: JSON.stringify({
+                    venueId: 'test-123',
+                    venueType: 'caterer',
+                    eventDate: '2024-12-25',
+                    guestCount: 100,
+                    notes: 'Test booking from API test'
+                }),
+            });
+        }
+
+        async function testContact() {
+            await apiRequest('/contact', {
+                method: 'POST',
+                body: JSON.stringify({
+                    venueId: 'test-123',
+                    venueType: 'caterer',
+                    contactType: 'message',
+                    message: 'Test message from API test',
+                    name: 'Test User',
+                    email: 'test@example.com',
+                    phone: '1234567890'
+                }),
+            });
+        }
+
+        async function testVendorCreate() {
+            // Create FormData for vendor creation (multipart/form-data)
+            const formData = new FormData();
+            formData.append('name', 'Test Vendor');
+            formData.append('vendorType', 'caterer'); // Changed from 'category' to 'vendorType'
+            formData.append('location', 'Mumbai');
+            formData.append('contact', 'test@example.com');
+            formData.append('details', JSON.stringify({
+                description: 'Test vendor description',
+                features: ['Feature 1', 'Feature 2'],
+                services: ['Service 1', 'Service 2'],
+                price: '₹1000 - ₹3000 per plate',
+                rating: '4.5'
+            }));
+            
+            // Add mock image file
+            const mockFile = new Blob(['test image content'], { type: 'image/jpeg' });
+            formData.append('images', mockFile, 'test-image.jpg');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/vendor/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer mock-jwt-token-for-testing`,
+                        // Don't set Content-Type for FormData - browser will set it with boundary
+                    },
+                    body: formData
+                });
+                
+                const result = await response.json();
+                console.log('Vendor Create Response:', result);
+                document.getElementById('result').innerHTML = `
+                    <h3>Vendor Create Test</h3>
+                    <p>Status: ${response.status}</p>
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                `;
+            } catch (error) {
+                console.error('Vendor Create Error:', error);
+                document.getElementById('result').innerHTML = 'Vendor Create Error: ' + error.message;
+            }
+        }
+
+        async function testReview() {
+            await apiRequest('/review/create', {
+                method: 'POST',
+                body: JSON.stringify({
+                    vendorId: 'test-123',
+                    rating: 5,
+                    comment: 'Test review from API test',
+                    reviewerName: 'Test User'
+                }),
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,11 +1,24 @@
 import React, { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import BookingModal from '../../components/BookingModal'
+import ContactForm from '../../components/ContactForm'
+import { favoritesAPI, reviewAPI } from '../../services/api'
 
 const DecoratorDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { isAuthenticated, user } = useAuth()
   const [selectedImage, setSelectedImage] = useState(0)
   const [showReviewForm, setShowReviewForm] = useState(false)
+  const [showBookingModal, setShowBookingModal] = useState(false)
+  const [showContactForm, setShowContactForm] = useState(false)
+  const [contactType, setContactType] = useState('message')
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'success' })
+  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 })
+  const [loading, setLoading] = useState(false)
+  const [isFavorited, setIsFavorited] = useState(false)
+  const [isLoadingFavorite, setIsLoadingFavorite] = useState(false)
   const [reviewForm, setReviewForm] = useState({
     name: '',
     rating: 0,
@@ -21,10 +34,10 @@ const DecoratorDetail = () => {
       price: '₹2,00,000 - ₹10,00,000',
       rating: 4.9,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://getethnic.com/wp-content/uploads/2020/09/207007-AmitaSPhotography-0084-orig.jpg',
+        'https://decorsutrablog.com/wp-content/uploads/2020/06/DecorSutra_Wedding-Decor-3-_Bhoomi-EVents-Planners.jpg',
+        'https://www.trendydecorator.com/wedding/2.jpg',
+        'https://indianweddingdecorators.com.au/wp-content/uploads/2022/04/Mandap-Decoration-Indian-Wedding-Decorators-Melbourne-Australia-15-1-1024x576.jpg'
       ],
       description: 'Luxurious traditional wedding decoration with authentic themes and premium materials.',
       features: ['Traditional Themes', 'Premium Materials', 'Royal Setup', 'Floral Arrangements', 'Lighting Design', 'Stage Decoration'],
@@ -55,10 +68,10 @@ const DecoratorDetail = () => {
       price: '₹1,50,000 - ₹8,00,000',
       rating: 4.8,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://decorsutrablog.com/wp-content/uploads/2020/06/DecorSutra_Wedding-Decor-3-_Bhoomi-EVents-Planners.jpg',
+        'https://www.trendydecorator.com/wedding/2.jpg',
+        'https://indianweddingdecorators.com.au/wp-content/uploads/2022/04/Mandap-Decoration-Indian-Wedding-Decorators-Melbourne-Australia-15-1-1024x576.jpg',
+        'https://tse3.mm.bing.net/th/id/OIP.7S3-Ap9gRaopqixImJ-sogHaFj?pid=Api&P=0&h=180'
       ],
       description: 'Contemporary wedding decoration with minimalist designs and modern aesthetics.',
       features: ['Modern Designs', 'Minimalist Style', 'Innovative Concepts', 'LED Lighting', 'Contemporary Themes', 'Clean Aesthetics'],
@@ -89,10 +102,10 @@ const DecoratorDetail = () => {
       price: '₹1,00,000 - ₹6,00,000',
       rating: 4.9,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'https://www.trendydecorator.com/wedding/2.jpg',
+        'https://indianweddingdecorators.com.au/wp-content/uploads/2022/04/Mandap-Decoration-Indian-Wedding-Decorators-Melbourne-Australia-15-1-1024x576.jpg',
+        'https://tse3.mm.bing.net/th/id/OIP.7S3-Ap9gRaopqixImJ-sogHaFj?pid=Api&P=0&h=180',
+        'https://tse2.mm.bing.net/th/id/OIP.y3BPpJLcFrSaILwcgTudVgHaE8?pid=Api&P=0&h=180'
       ],
       description: 'Specialized floral decoration with exotic flowers and creative arrangements.',
       features: ['Exotic Flowers', 'Creative Arrangements', 'Natural Themes', 'Floral Arch', 'Centerpieces', 'Garden Setup'],
@@ -123,10 +136,10 @@ const DecoratorDetail = () => {
       price: '₹80,000 - ₹5,00,000',
       rating: 4.7,
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180'
+        'https://indianweddingdecorators.com.au/wp-content/uploads/2022/04/Mandap-Decoration-Indian-Wedding-Decorators-Melbourne-Australia-15-1-1024x576.jpg',
+        'https://tse3.mm.bing.net/th/id/OIP.7S3-Ap9gRaopqixImJ-sogHaFj?pid=Api&P=0&h=180',
+        'https://tse2.mm.bing.net/th/id/OIP.y3BPpJLcFrSaILwcgTudVgHaE8?pid=Api&P=0&h=180',
+        'https://www.marriagecolours.com/images/cwd-carousel/dbg3.jpg'
       ],
       description: 'Authentic cultural decoration reflecting traditional Indian heritage.',
       features: ['Cultural Themes', 'Regional Styles', 'Traditional Elements', 'Heritage Decor', 'Ritual Setup', 'Authentic Materials'],
@@ -157,10 +170,10 @@ const DecoratorDetail = () => {
       price: '₹5,00,000 - ₹25,00,000',
       rating: 5.0,
       images: [
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180'
+        'https://tse3.mm.bing.net/th/id/OIP.7S3-Ap9gRaopqixImJ-sogHaFj?pid=Api&P=0&h=180',
+        'https://tse2.mm.bing.net/th/id/OIP.y3BPpJLcFrSaILwcgTudVgHaE8?pid=Api&P=0&h=180',
+        'https://www.marriagecolours.com/images/cwd-carousel/dbg3.jpg',
+        'https://i.pinimg.com/originals/b8/c7/cf/b8c7cfc25fdccf106b114629031571fb.jpg'
       ],
       description: 'Ultra-luxury wedding decoration with premium materials and exclusive designs.',
       features: ['Luxury Materials', 'Exclusive Designs', 'Personalized Themes', 'Premium Lighting', 'Custom Setup', 'VIP Service'],
@@ -191,10 +204,10 @@ const DecoratorDetail = () => {
       price: '₹1,20,000 - ₹7,00,000',
       rating: 4.6,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180'
+        'https://tse2.mm.bing.net/th/id/OIP.y3BPpJLcFrSaILwcgTudVgHaE8?pid=Api&P=0&h=180',
+        'https://www.marriagecolours.com/images/cwd-carousel/dbg3.jpg',
+        'https://i.pinimg.com/originals/b8/c7/cf/b8c7cfc25fdccf106b114629031571fb.jpg',
+        'https://getethnic.com/wp-content/uploads/2020/09/207007-AmitaSPhotography-0084-orig.jpg'
       ],
       description: 'Beautiful outdoor wedding decoration with garden themes and natural elements.',
       features: ['Garden Themes', 'Natural Elements', 'Outdoor Lighting', 'Tent Setup', 'Green Decor', 'Weather Protection'],
@@ -225,10 +238,10 @@ const DecoratorDetail = () => {
       price: '₹3,00,000 - ₹15,00,000',
       rating: 4.8,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://tse1.mm.bing.net/th/id/OIP.H1lKjZ8f7Q9Xk2m3n4p5XwHaE8?pid=Api&P=0&h=180',
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180'
+        'https://www.marriagecolours.com/images/cwd-carousel/dbg3.jpg',
+        'https://i.pinimg.com/originals/b8/c7/cf/b8c7cfc25fdccf106b114629031571fb.jpg',
+        'https://getethnic.com/wp-content/uploads/2020/09/207007-AmitaSPhotography-0084-orig.jpg',
+        'https://decorsutrablog.com/wp-content/uploads/2020/06/DecorSutra_Wedding-Decor-3-_Bhoomi-EVents-Planners.jpg'
       ],
       description: 'Exotic destination wedding decoration with beach themes and international styles.',
       features: ['Beach Themes', 'Palace Settings', 'International Styles', 'Travel Setup', 'Exotic Decor', 'Destination Expertise'],
@@ -253,12 +266,153 @@ const DecoratorDetail = () => {
     }
   }
 
-  const handleSubmitReview = (e) => {
+  const showNotification = (message, type = 'success') => {
+    setNotification({ show: true, message, type })
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: 'success' })
+    }, 3000)
+  }
+
+  const handleBookNow = (event) => {
+    if (!isAuthenticated) {
+      alert('Please login to book this decorator')
+      navigate('/login')
+      return
+    }
+    
+    // Capture button position
+    const rect = event.target.getBoundingClientRect()
+    setButtonPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.top
+    })
+    
+    setShowBookingModal(true)
+  }
+
+  const handleFavorite = async () => {
+    if (!isAuthenticated) {
+      alert('Please login to save favorites')
+      navigate('/login')
+      return
+    }
+
+    setIsLoadingFavorite(true)
+    
+    try {
+      const token = localStorage.getItem('token')
+      
+      if (isFavorited) {
+        // Remove from favorites
+        console.log('Removing from favorites for decorator:', decorator.id);
+        const response = await fetch(`http://localhost:3000/api/favourite/remove?venueId=${decorator.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        
+        const data = await response.json()
+        console.log('Remove response:', data);
+
+        if (response.ok) {
+          setIsFavorited(false)
+          alert('Removed from favorites!')
+        } else {
+          alert(data.message || 'Failed to remove from favorites')
+        }
+      } else {
+        // Add to favorites
+        const requestData = {
+          venueId: decorator.id,
+          venueType: 'decorator',
+          notes: `Interested in ${decorator.name} decoration services`
+        };
+        
+        console.log('Adding to favorites with data:', requestData);
+        
+        const response = await fetch('http://localhost:3000/api/favourite/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(requestData)
+        })
+        
+        const data = await response.json()
+        console.log('Add response:', data);
+
+        if (response.ok) {
+          setIsFavorited(true)
+          alert('Added to favorites!')
+        } else {
+          if (data.message.includes('already in favourites')) {
+            setIsFavorited(true)
+            alert('Already in favorites!')
+          } else {
+            alert(data.message || 'Failed to add to favorites')
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Favorite error:', error)
+      alert('Failed to update favorites. Please try again.')
+    } finally {
+      setIsLoadingFavorite(false)
+    }
+  }
+
+  const handleCallNow = () => {
+    setContactType('call')
+    setShowContactForm(true)
+  }
+
+  const handleSendMessage = () => {
+    setContactType('message')
+    setShowContactForm(true)
+  }
+
+  const handleSubmitReview = async (e) => {
     e.preventDefault()
-    // Handle review submission logic here
-    console.log('Review submitted:', reviewForm)
-    setShowReviewForm(false)
-    setReviewForm({ name: '', rating: 0, comment: '' })
+    
+    if (!reviewForm.name || !reviewForm.rating || !reviewForm.comment) {
+      showNotification('Please fill all fields', 'error')
+      return
+    }
+
+    try {
+      const token = localStorage.getItem('token')
+      const requestData = {
+        venueId: decorator.id,
+        name: reviewForm.name,
+        rating: reviewForm.rating,
+        comment: reviewForm.comment
+      };
+      
+      const response = await fetch('http://localhost:3000/api/review/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(requestData)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        showNotification('Review submitted successfully!')
+        setShowReviewForm(false)
+        setReviewForm({ name: '', rating: 0, comment: '' })
+      } else {
+        showNotification(data.message || 'Failed to submit review', 'error')
+      }
+    } catch (error) {
+      console.error('Review submission error:', error)
+      showNotification('Failed to submit review. Please try again.', 'error')
+    }
   }
 
   // Load decorator from mock data or vendor services
@@ -338,6 +492,34 @@ const DecoratorDetail = () => {
 
   const decorator = getDecorator()
 
+  // Check if decorator is already in favorites when component loads
+  React.useEffect(() => {
+    const checkIfFavorited = async () => {
+      if (!isAuthenticated || !decorator) return
+      
+      try {
+        const token = localStorage.getItem('token')
+        const response = await fetch('http://localhost:3000/api/favourite/user', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          const isAlreadyFavorited = data.favourites.some(
+            fav => fav.venueId.toString() === decorator.id.toString()
+          )
+          setIsFavorited(isAlreadyFavorited)
+        }
+      } catch (error) {
+        console.error('Error checking favorite status:', error)
+      }
+    }
+
+    checkIfFavorited()
+  }, [isAuthenticated, decorator])
+
   if (!decorator) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-pink-100 to-pink-50 flex items-center justify-center">
@@ -395,11 +577,22 @@ const DecoratorDetail = () => {
             </div>
 
             <div className="flex space-x-4">
-              <button className="flex-1 bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 rounded-lg font-semibold">
+              <button 
+                onClick={handleBookNow}
+                className="flex-1 bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 rounded-lg font-semibold hover:from-pink-500 hover:to-pink-600 transition-all"
+              >
                 Book Now
               </button>
-              <button className="flex-1 border-2 border-pink-400 text-pink-600 py-3 rounded-lg font-semibold">
-                Save to Favorites
+              <button 
+                onClick={handleFavorite}
+                disabled={isLoadingFavorite}
+                className={`flex-1 border-2 py-3 rounded-lg transition-colors font-semibold ${
+                  isFavorited 
+                    ? 'bg-pink-100 border-pink-400 text-pink-600' 
+                    : 'border-pink-400 text-pink-600 hover:bg-pink-50'
+                } ${isLoadingFavorite ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {isLoadingFavorite ? 'Saving...' : isFavorited ? '❤️ Saved' : '🤍 Save to Favorites'}
               </button>
             </div>
           </div>
@@ -541,13 +734,54 @@ const DecoratorDetail = () => {
                 </div>
               </div>
               <div className="mt-6 space-y-3">
-                <button className="w-full bg-pink-500 text-white py-2 rounded-lg">Call Now</button>
-                <button className="w-full border-2 border-pink-400 text-pink-600 py-2 rounded-lg">Send Message</button>
+                <button 
+                  onClick={handleCallNow}
+                  className="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition-colors"
+                >
+                  Call Now
+                </button>
+                <button 
+                  onClick={handleSendMessage}
+                  className="w-full border-2 border-pink-400 text-pink-600 py-2 rounded-lg hover:bg-pink-50 transition-colors"
+                >
+                  Send Message
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Notification */}
+      {notification.show && (
+        <div className={`fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg ${
+          notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+        } text-white`}>
+          {notification.message}
+        </div>
+      )}
+
+      {/* Booking Modal */}
+      {showBookingModal && (
+        <BookingModal
+          isOpen={showBookingModal}
+          onClose={() => setShowBookingModal(false)}
+          venue={decorator}
+          buttonPosition={buttonPosition}
+        />
+      )}
+
+      {/* Contact Form Modal */}
+      {showContactForm && (
+        <ContactForm
+          venueId={decorator.id}
+          venueType="decorator"
+          venueName={decorator.name}
+          contactType={contactType}
+          onClose={() => setShowContactForm(false)}
+          onSuccess={(message) => showNotification(message)}
+        />
+      )}
     </div>
   )
 }

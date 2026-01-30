@@ -1,11 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import BookingModal from '../../components/BookingModal'
+import MessageModal from '../../components/MessageModal'
+import ContactForm from '../../components/ContactForm'
+import SimpleImage from '../../components/SimpleImage'
 
 const VenueDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { isAuthenticated, user } = useAuth()
   const [selectedImage, setSelectedImage] = useState(0)
   const [showReviewForm, setShowReviewForm] = useState(false)
+  const [showBookingModal, setShowBookingModal] = useState(false)
+  const [showMessageModal, setShowMessageModal] = useState(false)
+  const [showContactForm, setShowContactForm] = useState(false)
+  const [contactType, setContactType] = useState('message')
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'success' })
+  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 })
+  const [isFavorited, setIsFavorited] = useState(false)
+  const [isLoadingFavorite, setIsLoadingFavorite] = useState(false)
+  const [venue, setVenue] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [reviewForm, setReviewForm] = useState({
     name: '',
     rating: 0,
@@ -23,10 +39,10 @@ const VenueDetail = () => {
       capacity: '500-1000 guests',
       rating: 4.8,
       images: [
-        'https://media-api.xogrp.com/images/a46789ba-034f-4da5-9cb4-22c940a86632',
-        'https://picsum.photos/seed/palace1/800/600.jpg',
-        'https://picsum.photos/seed/palace2/800/600.jpg',
-        'https://picsum.photos/seed/palace3/800/600.jpg'
+        'https://www.weddingsutra.com/images/the-taj-mahal-palace-img4.jpg',
+        'https://www.eternalweddingz.in/storage/venue_images/Qibfkip8GWSzxPLRPu8Ad4ZO8wLHrMpxcddwUeVv.webp',
+        'http://www.udaipurweddings.com/wp-content/uploads/2017/11/13-3.jpg',
+        'https://www.weddingsbyneerajkamra.com/uploads/BlogPictures/default/udaivilas-hotel-udaipur.png'
       ],
       description: 'Grand Royal Palace is a luxurious banquet hall that epitomizes elegance and sophistication. With state-of-the-art facilities and breathtaking architecture, this venue offers the perfect backdrop for your dream wedding.',
       features: [
@@ -74,10 +90,10 @@ const VenueDetail = () => {
       capacity: '200-500 guests',
       rating: 4.9,
       images: [
-        'https://tse4.mm.bing.net/th/id/OIP.Z9xC1GBFLEzeFHrjC9E6YwHaDe?pid=Api&P=0&h=180',
-        'https://picsum.photos/seed/villa1/800/600.jpg',
-        'https://picsum.photos/seed/villa2/800/600.jpg',
-        'https://picsum.photos/seed/villa3/800/600.jpg'
+        'https://tse1.mm.bing.net/th/id/OIP.SVY9BpvNHP2MV-or8q3sSwHaE7?pid=Api&P=0&h=180',
+        'https://tse3.mm.bing.net/th/id/OIP.cMQWata8uis-1qbdG_H0SAHaDO?pid=Api&P=0&h=180',
+        'https://media.weddingz.in/images/9bfe5bc7b49ce9f9385d0d9d2a3ca68f/148636425.jpg',
+        'https://i.pinimg.com/736x/57/ea/99/57ea9907aed0b584bc0679de72f59e5c.jpg'
       ],
       description: 'Sunset Villa Estate offers a breathtaking beachfront location perfect for intimate and romantic weddings. This private villa combines luxury with natural beauty, creating an unforgettable wedding experience.',
       features: [
@@ -124,10 +140,10 @@ const VenueDetail = () => {
       capacity: '300-800 guests',
       rating: 4.6,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP._ek4X7FuJqixT2QWGPH4NgHaE7?pid=Api&P=0&h=180',
-        'https://picsum.photos/seed/farm1/800/600.jpg',
-        'https://picsum.photos/seed/farm2/800/600.jpg',
-        'https://picsum.photos/seed/farm3/800/600.jpg'
+        'https://www.dreammakersevent.com/images/venues/udaipur/ramada/06.jpg',
+        'https://www.remotelands.com/travelogues/app/uploads/2021/02/The-Leela-Palace-01-1920x960.jpg',
+        'http://www.travelmango.in/wp-content/uploads/2018/02/The_Leela_Palace.jpg',
+        'https://www.thelalit.com/wp-content/uploads/2017/02/Wedding-Setup7-Udaipur-768x562.jpg'
       ],
       description: 'Green Meadow Farmhouse offers a rustic yet elegant setting surrounded by lush greenery. This venue combines countryside charm with modern amenities for a perfect wedding celebration.',
       features: [
@@ -174,10 +190,10 @@ const VenueDetail = () => {
       capacity: '200-600 guests',
       rating: 4.7,
       images: [
-        'https://2.bp.blogspot.com/-TjYHq_ucrL0/WUoGMcO6J0I/AAAAAAAAaAc/ekhT4kar0QkbqMMYPkDItLQgaC6KOFbUACLcBGAs/s1600/westin2.jpg',
-        'https://picsum.photos/seed/garden1/800/600.jpg',
-        'https://picsum.photos/seed/garden2/800/600.jpg',
-        'https://picsum.photos/seed/garden3/800/600.jpg'
+        'https://lh3.googleusercontent.com/uH_eJI8S0i5QXPTPDQ8QYynC5xefkhkG0EGMRx0F7a7TFN9DS7PZETafDZxGq5vWrbSL5pk3b1FqO5CN_ln-ND7nQNQ=w1000',
+        'https://tse2.mm.bing.net/th/id/OIP.rUhgggt3UqD8hd0BlGwpqwHaEH?pid=Api&P=0&h=180',
+        'https://www.hoteldekho.com/blog/wp-content/uploads/2022/06/15-Best-Wedding-Venues-In-Jaipur-2.jpg',
+        'https://img.traveltriangle.com/blog/wp-content/uploads/2020/04/OG.jpg'
       ],
       description: 'Rose Garden Paradise is a botanical wonderland featuring thousands of roses and exotic flowers. This romantic garden venue creates a fairy-tale atmosphere for your special day.',
       features: [
@@ -224,10 +240,10 @@ const VenueDetail = () => {
       capacity: '400-900 guests',
       rating: 4.5,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP.TpdKJQLNtTda-7aeCmQDNgHaE7?pid=Api&P=0&h=180',
-        'https://picsum.photos/seed/heritage1/800/600.jpg',
-        'https://picsum.photos/seed/heritage2/800/600.jpg',
-        'https://picsum.photos/seed/heritage3/800/600.jpg'
+        'https://www.dreammakersevent.com/images/venues/udaipur/ramada/06.jpg',
+        'https://www.remotelands.com/travelogues/app/uploads/2021/02/The-Leela-Palace-01-1920x960.jpg',
+        'http://www.travelmango.in/wp-content/uploads/2018/02/The_Leela_Palace.jpg',
+        'https://www.thelalit.com/wp-content/uploads/2017/02/Wedding-Setup7-Udaipur-768x562.jpg'
       ],
       description: 'Heritage Banquet Hall combines traditional Indian architecture with modern luxury. This venue offers a perfect blend of cultural heritage and contemporary comfort.',
       features: [
@@ -274,10 +290,10 @@ const VenueDetail = () => {
       capacity: '250-700 guests',
       rating: 4.8,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP.9V09noDMgcgRdXU9Sk4-ZQHaFj?pid=Api&P=0&h=180',
-        'https://picsum.photos/seed/resort1/800/600.jpg',
-        'https://picsum.photos/seed/resort2/800/600.jpg',
-        'https://picsum.photos/seed/resort3/800/600.jpg'
+        'https://lh3.googleusercontent.com/uH_eJI8S0i5QXPTPDQ8QYynC5xefkhkG0EGMRx0F7a7TFN9DS7PZETafDZxGq5vWrbSL5pk3b1FqO5CN_ln-ND7nQNQ=w1000',
+        'https://tse2.mm.bing.net/th/id/OIP.rUhgggt3UqD8hd0BlGwpqwHaEH?pid=Api&P=0&h=180',
+        'https://www.hoteldekho.com/blog/wp-content/uploads/2022/06/15-Best-Wedding-Venues-In-Jaipur-2.jpg',
+        'https://img.traveltriangle.com/blog/wp-content/uploads/2020/04/OG.jpg'
       ],
       description: 'Luxury Garden Resort offers a sophisticated outdoor venue with meticulously landscaped gardens and world-class amenities. Perfect for couples seeking elegance and natural beauty.',
       features: [
@@ -324,10 +340,10 @@ const VenueDetail = () => {
       capacity: '350-900 guests',
       rating: 4.9,
       images: [
-        'https://tse3.mm.bing.net/th/id/OIP.rEHhL0woFTdVZkln-NVXPQHaD3?pid=Api&P=0&h=180',
-        'https://picsum.photos/seed/royal1/800/600.jpg',
-        'https://picsum.photos/seed/royal2/800/600.jpg',
-        'https://picsum.photos/seed/royal3/800/600.jpg'
+        'https://www.dreammakersevent.com/images/venues/udaipur/ramada/06.jpg',
+        'https://www.remotelands.com/travelogues/app/uploads/2021/02/The-Leela-Palace-01-1920x960.jpg',
+        'http://www.travelmango.in/wp-content/uploads/2018/02/The_Leela_Palace.jpg',
+        'https://www.thelalit.com/wp-content/uploads/2017/02/Wedding-Setup7-Udaipur-768x562.jpg'
       ],
       description: 'Royal Farm Estate offers majestic lake views and royal architecture. This premium farmhouse venue combines rustic charm with regal elegance for a truly royal wedding experience.',
       features: [
@@ -374,10 +390,10 @@ const VenueDetail = () => {
       capacity: '150-400 guests',
       rating: 4.7,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.nDHq28eAKhO19SXtx16YNwHaEJ?pid=Api&P=0&h=180',
-        'https://picsum.photos/seed/ocean1/800/600.jpg',
-        'https://picsum.photos/seed/ocean2/800/600.jpg',
-        'https://picsum.photos/seed/ocean3/800/600.jpg'
+        'https://lh3.googleusercontent.com/uH_eJI8S0i5QXPTPDQ8QYynC5xefkhkG0EGMRx0F7a7TFN9DS7PZETafDZxGq5vWrbSL5pk3b1FqO5CN_ln-ND7nQNQ=w1000',
+        'https://tse2.mm.bing.net/th/id/OIP.rUhgggt3UqD8hd0BlGwpqwHaEH?pid=Api&P=0&h=180',
+        'https://www.hoteldekho.com/blog/wp-content/uploads/2022/06/15-Best-Wedding-Venues-In-Jaipur-2.jpg',
+        'https://img.traveltriangle.com/blog/wp-content/uploads/2020/04/OG.jpg'
       ],
       description: 'Ocean View Villa offers stunning panoramic ocean views and luxurious beachfront living. This exclusive villa provides an intimate setting for unforgettable wedding celebrations.',
       features: [
@@ -424,10 +440,10 @@ const VenueDetail = () => {
       capacity: '300-400 guests',
       rating: 4.5,
       images: [
-        'https://www.wedresearch.net/wp-content/uploads/2017/07/grand-ballroom.jpg',
-        'https://picsum.photos/seed/taj1/800/600.jpg',
-        'https://picsum.photos/seed/taj2/800/600.jpg',
-        'https://picsum.photos/seed/taj3/800/600.jpg'
+        'https://www.dreammakersevent.com/images/venues/udaipur/ramada/06.jpg',
+        'https://www.remotelands.com/travelogues/app/uploads/2021/02/The-Leela-Palace-01-1920x960.jpg',
+        'http://www.travelmango.in/wp-content/uploads/2018/02/The_Leela_Palace.jpg',
+        'https://www.thelalit.com/wp-content/uploads/2017/02/Wedding-Setup7-Udaipur-768x562.jpg'
       ],
       description: 'Taj Hotel brings legendary hospitality and timeless elegance to your wedding celebration. Experience world-class service and luxurious surroundings for your special day.',
       features: [
@@ -474,10 +490,10 @@ const VenueDetail = () => {
       capacity: '250-400 guests',
       rating: 4.9,
       images: [
-        'https://tse2.mm.bing.net/th/id/OIP.7PNEGXyHecELJg0lKD6IUgHaD4?pid=Api&P=0&h=180',
-        'https://picsum.photos/seed/hilton1/800/600.jpg',
-        'https://picsum.photos/seed/hilton2/800/600.jpg',
-        'https://picsum.photos/seed/hilton3/800/600.jpg'
+        'https://lh3.googleusercontent.com/uH_eJI8S0i5QXPTPDQ8QYynC5xefkhkG0EGMRx0F7a7TFN9DS7PZETafDZxGq5vWrbSL5pk3b1FqO5CN_ln-ND7nQNQ=w1000',
+        'https://tse2.mm.bing.net/th/id/OIP.rUhgggt3UqD8hd0BlGwpqwHaEH?pid=Api&P=0&h=180',
+        'https://www.hoteldekho.com/blog/wp-content/uploads/2022/06/15-Best-Wedding-Venues-In-Jaipur-2.jpg',
+        'https://img.traveltriangle.com/blog/wp-content/uploads/2020/04/OG.jpg'
       ],
       description: 'Hilton offers international luxury and impeccable service for your dream wedding. Experience world-class hospitality and stunning venues in the beautiful setting of Goa.',
       features: [
@@ -518,87 +534,284 @@ const VenueDetail = () => {
     }
   }
 
+  // Load venue data on component mount
+  useEffect(() => {
+    const loadVenue = async () => {
+      try {
+        const venueData = await getVenue()
+        setVenue(venueData)
+        setLoading(false)
+      } catch (error) {
+        console.error('Error loading venue:', error)
+        setLoading(false)
+      }
+    }
+    
+    loadVenue()
+  }, [id])
+
   // Load venue from mock data or vendor services
-  const getVenue = () => {
+  const getVenue = async () => {
     // First check if it's a vendor service
-    if (id && id.toString().startsWith('vendor_')) {
-      // Extract the actual service ID
-      const serviceId = id.toString().replace('vendor_', '')
-      
-      // Search in localStorage for vendor services
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key && key.startsWith('vendor_services_')) {
-          try {
-            const services = JSON.parse(localStorage.getItem(key))
-            const service = services.find(s => s.id.toString() === serviceId && s.category === 'venues')
-            if (service) {
-              // Transform vendor service to venue format
-              return {
-                id: id,
-                name: service.name,
-                type: 'vendor',
-                city: service.location.toLowerCase(),
-                price: service.price,
-                capacity: '100-500 guests',
-                rating: 4.5,
-                images: service.images && service.images.length > 0 
-                  ? service.images.map(img => img.preview)
-                  : [
-                      'https://images.unsplash.com/photo-1519223105527-8a72762a52b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-                      'https://picsum.photos/seed/vendor1/800/600.jpg',
-                      'https://picsum.photos/seed/vendor2/800/600.jpg'
-                    ],
-                description: service.description,
-                detailedDescription: `${service.name} is an exceptional venue choice that offers a perfect blend of elegance and functionality for your special occasion. This venue provides a stunning backdrop with modern amenities and professional service to ensure your event is memorable. With flexible spaces and experienced event coordination, this venue can accommodate various wedding styles and guest counts, making it an ideal choice for couples seeking a beautiful and well-managed celebration venue.`,
-                features: [
-                  'Professional service',
-                  'Flexible pricing',
-                  'Direct vendor contact',
-                  'Customizable packages',
-                  'Experienced staff',
-                  'Quality assurance'
-                ],
-                amenities: [
-                  'Customer support',
-                  'Online booking',
-                  'Payment flexibility',
-                  'Vendor consultation'
-                ],
-                policies: {
-                  cancellation: 'Flexible cancellation policy',
-                  payment: 'Multiple payment options available',
-                  timing: 'Available 24/7 for inquiries'
-                },
-                contact: {
-                  phone: service.contactPhone,
-                  email: service.contactEmail
-                },
-                vendorName: service.vendorName,
-                isVendorService: true,
-                contactPhone: service.contactPhone,
-                contactEmail: service.contactEmail
-              }
-            }
-          } catch (error) {
-            console.error('Error loading vendor service:', error)
-          }
+    if (id) {
+      try {
+        // Try to fetch as vendor service
+        const response = await fetch(`http://localhost:3000/api/user/product/${id}`);
+        if (response.ok) {
+          const data = await response.json();
+          const service = data.product;
+          
+          // Transform vendor service to venue format
+          return {
+            id: service._id,
+            name: service.name,
+            type: 'vendor',
+            city: service.location.toLowerCase(),
+            price: service.details?.pricePerDay || 'Contact for pricing',
+            capacity: service.details?.rooms || '100-500 guests',
+            rating: 4.5,
+            images: service.images || [],
+            description: service.description,
+            features: [
+              'Professional service',
+              'Customizable packages',
+              'Experienced staff',
+              'Quality assurance'
+            ],
+            amenities: [
+              'Vendor managed service',
+              'Flexible timing',
+              'Custom arrangements',
+              'Dedicated support'
+            ],
+            contactPhone: service.contact,
+            contactEmail: service.contact,
+            vendorName: service.owner?.username || 'Vendor',
+            isVendorService: true,
+            vendorId: service.owner,
+            venueType: service.details?.venueType || 'Hall',
+            reviews: [] // Empty reviews for vendor services
+          };
         }
+      } catch (error) {
+        console.log('Not a vendor service, trying mock data...');
       }
     }
     
     // Return mock venue if not found in vendor services
-    return venueDetails[id]
+    return venueDetails[id];
   }
 
-  const venue = getVenue()
-
-  const handleSubmitReview = (e) => {
+  const handleSubmitReview = async (e) => {
     e.preventDefault()
-    // Handle review submission logic here
-    console.log('Review submitted:', reviewForm)
-    setShowReviewForm(false)
-    setReviewForm({ name: '', rating: 0, comment: '' })
+    
+    if (!isAuthenticated) {
+      alert('Please login to submit a review')
+      navigate('/login')
+      return
+    }
+
+    try {
+      const token = localStorage.getItem('token')
+      const requestData = {
+        venueId: venue.id,
+        name: reviewForm.name,
+        rating: reviewForm.rating,
+        comment: reviewForm.comment
+      };
+      
+      console.log('Submitting review:', requestData);
+      
+      const response = await fetch('http://localhost:3000/api/review/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Review submitted successfully!');
+        setShowReviewForm(false)
+        setReviewForm({ name: '', rating: 0, comment: '' })
+      } else {
+        alert(data.message || 'Failed to submit review');
+      }
+    } catch (error) {
+      console.error('Review submission error:', error);
+      alert('Failed to submit review. Please try again.');
+    }
+  }
+
+  const handleBookNow = (event) => {
+    console.log('Book Now clicked - isAuthenticated:', isAuthenticated);
+    console.log('Current showBookingModal state:', showBookingModal);
+    
+    if (!isAuthenticated) {
+      alert('Please login to book this venue')
+      navigate('/login')
+      return
+    }
+    
+    // Capture button position
+    const rect = event.target.getBoundingClientRect()
+    setButtonPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.top
+    })
+    
+    setShowBookingModal(true)
+  }
+
+  const handleCallNow = () => {
+    if (!isAuthenticated) {
+      alert('Please login to request a call')
+      navigate('/login')
+      return
+    }
+    setContactType('call')
+    setShowContactForm(true)
+  }
+
+  const handleSendMessage = () => {
+    if (!isAuthenticated) {
+      alert('Please login to send a message')
+      navigate('/login')
+      return
+    }
+    setShowMessageModal(true)
+  }
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ show: true, message, type })
+    setTimeout(() => {
+      setNotification({ show: false, message: '', type: 'success' })
+    }, 3000)
+  }
+
+  const handleWriteReview = () => {
+    if (!isAuthenticated) {
+      alert('Please login to write a review')
+      navigate('/login')
+      return
+    }
+    setShowReviewForm(true)
+  }
+
+  const handleFavorite = async () => {
+    if (!isAuthenticated) {
+      alert('Please login to save favorites')
+      navigate('/login')
+      return
+    }
+
+    setIsLoadingFavorite(true)
+    
+    try {
+      const token = localStorage.getItem('token')
+      
+      if (isFavorited) {
+        // Remove from favorites
+        console.log('Removing from favorites for venue:', venue.id);
+        const response = await fetch(`http://localhost:3000/api/favourite/remove?venueId=${venue.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        const data = await response.json()
+        console.log('Remove response:', data);
+
+        if (response.ok) {
+          setIsFavorited(false)
+          alert('Removed from favorites!')
+        } else {
+          alert(data.message || 'Failed to remove from favorites')
+        }
+      } else {
+        // Add to favorites
+        const requestData = {
+          venueId: venue.id,
+          venueType: 'venue',
+          notes: `Interested in ${venue.name}`
+        };
+        
+        console.log('Adding to favorites with data:', requestData);
+        
+        const response = await fetch('http://localhost:3000/api/favourite/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(requestData)
+        })
+
+        const data = await response.json()
+        console.log('Add response:', data);
+
+        if (response.ok) {
+          setIsFavorited(true)
+          alert('Added to favorites!')
+        } else {
+          if (data.message.includes('already in favourites')) {
+            setIsFavorited(true)
+            alert('Already in favorites!')
+          } else {
+            alert(data.message || 'Failed to add to favorites')
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Favorite error:', error)
+      alert('Failed to update favorites. Please try again.')
+    } finally {
+      setIsLoadingFavorite(false)
+    }
+  }
+
+  // Check if venue is already in favorites when component loads
+  React.useEffect(() => {
+    const checkIfFavorited = async () => {
+      if (!isAuthenticated || !venue) return
+      
+      try {
+        const token = localStorage.getItem('token')
+        const response = await fetch('http://localhost:3000/api/favourite/user', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          const isAlreadyFavorited = data.favourites.some(
+            fav => fav.venueId.toString() === venue.id.toString()
+          )
+          setIsFavorited(isAlreadyFavorited)
+        }
+      } catch (error) {
+        console.error('Error checking favorite status:', error)
+      }
+    }
+
+    checkIfFavorited()
+  }, [isAuthenticated, venue])
+
+  if (loading || !venue) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-200 via-pink-200 to-blue-200 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading venue details...</p>
+        </div>
+      </div>
+    )
   }
 
   if (!venue) {
@@ -630,10 +843,13 @@ const VenueDetail = () => {
             {/* Image Gallery */}
             <div className="space-y-4">
               <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
-                <img 
+                <SimpleImage 
                   src={venue.images[selectedImage]} 
                   alt={venue.name}
                   className="w-full h-full object-cover"
+                  width={800}
+                  height={800}
+                  crop="fill"
                 />
               </div>
               <div className="grid grid-cols-4 gap-2">
@@ -645,10 +861,13 @@ const VenueDetail = () => {
                       selectedImage === index ? 'border-pink-500' : 'border-gray-200'
                     }`}
                   >
-                    <img 
+                    <SimpleImage 
                       src={image} 
                       alt={`${venue.name} ${index + 1}`}
                       className="w-full h-full object-cover hover:scale-105 transition-transform"
+                      width={150}
+                      height={150}
+                      crop="fill"
                     />
                   </button>
                 ))}
@@ -687,11 +906,22 @@ const VenueDetail = () => {
 
               {/* Action Buttons */}
               <div className="flex space-x-4">
-                <button className="flex-1 bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all duration-300 font-semibold">
+                <button 
+                  onClick={handleBookNow}
+                  className="flex-1 bg-gradient-to-r from-pink-400 to-pink-500 text-white py-3 rounded-lg hover:from-pink-500 hover:to-pink-600 transition-all duration-300 font-semibold"
+                >
                   Book Now
                 </button>
-                <button className="flex-1 border-2 border-pink-400 text-pink-600 py-3 rounded-lg hover:bg-pink-50 transition-colors font-semibold">
-                  Save to Favorites
+                <button 
+                  onClick={handleFavorite}
+                  disabled={isLoadingFavorite}
+                  className={`flex-1 border-2 py-3 rounded-lg transition-colors font-semibold ${
+                    isFavorited 
+                      ? 'bg-pink-100 border-pink-400 text-pink-600' 
+                      : 'border-pink-400 text-pink-600 hover:bg-pink-50'
+                  } ${isLoadingFavorite ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  {isLoadingFavorite ? 'Saving...' : isFavorited ? '❤️ Saved' : '🤍 Save to Favorites'}
                 </button>
               </div>
             </div>
@@ -727,7 +957,7 @@ const VenueDetail = () => {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-800">Customer Reviews</h2>
                 <button 
-                  onClick={() => setShowReviewForm(!showReviewForm)}
+                  onClick={handleWriteReview}
                   className="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors"
                 >
                   Write a Review
@@ -839,10 +1069,16 @@ const VenueDetail = () => {
                 </div>
               </div>
               <div className="mt-6 space-y-3">
-                <button className="w-full bg-pink-500 text-white py-3 rounded-lg hover:bg-pink-600 transition-colors">
+                <button 
+                  onClick={handleCallNow}
+                  className="w-full bg-pink-500 text-white py-3 rounded-lg hover:bg-pink-600 transition-colors"
+                >
                   Call Now
                 </button>
-                <button className="w-full border-2 border-pink-400 text-pink-600 py-3 rounded-lg hover:bg-pink-50 transition-colors">
+                <button 
+                  onClick={handleSendMessage}
+                  className="w-full border-2 border-pink-400 text-pink-600 py-3 rounded-lg hover:bg-pink-50 transition-colors"
+                >
                   Send Message
                 </button>
               </div>
@@ -850,6 +1086,33 @@ const VenueDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Booking Modal */}
+      <BookingModal 
+        isOpen={showBookingModal} 
+        onClose={() => setShowBookingModal(false)} 
+        venue={venue}
+        buttonPosition={buttonPosition}
+      />
+
+      {/* Message Modal */}
+      <MessageModal 
+        isOpen={showMessageModal} 
+        onClose={() => setShowMessageModal(false)} 
+        venue={venue}
+      />
+
+      {/* Contact Form Modal */}
+      {showContactForm && (
+        <ContactForm
+          venueId={venue.id}
+          venueType="venue"
+          venueName={venue.name}
+          contactType={contactType}
+          onClose={() => setShowContactForm(false)}
+          onSuccess={(message) => showNotification(message)}
+        />
+      )}
     </div>
   )
 }
